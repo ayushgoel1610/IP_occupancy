@@ -18,7 +18,7 @@ class Command(BaseCommand):
 		today = date.today()
 		today = today -  relativedelta(days = 1)
 		last_date = today - relativedelta(days = today.day - 1 + 2)
-		module_dir = os.path.dirname("/media/ayush/DATA/@yush/engineering/django/IP/IP_occupancy/occupancy/webApp/")
+		module_dir = os.path.dirname("/home/occupancy/Downloads/IP_occupancy/occupancy/webApp/")
 		file_dir = os.path.join(module_dir,'token')
 		handle = open(file_dir,'r')
 		auth_token = handle.readline()

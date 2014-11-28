@@ -17,14 +17,16 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		print __file__
 		today = date.today()
-		today = today -  relativedelta(days = 3)
+		today = today -  relativedelta(days = 4)
 		last_date = today - relativedelta(days = today.day - 1 + 2)
-		module_dir = os.path.dirname("/media/ayush/DATA/@yush/engineering/django/IP/IP_occupancy/occupancy/webApp/")
+		module_dir = os.path.dirname("/home/occupancy/Downloads/IP_occupancy/occupancy/webApp/")
 		file_dir = os.path.join(module_dir,'token')
 		handle = open(file_dir,'r')
 		auth_token = handle.readline()
-		api_data_url = "https://192.168.1.40:9119/attendance?from=" + str(today) + "&to=" + str(today) + "&format=yyyy-mm-dd-hh24:mi:ss&token=" + auth_token
-		c = pycurl.Curl()
+		#api_data_url = "https://192.168.1.40:9119/attendance?from=" + str(today) + "&to=" + str(today) + "&format=yyyy-mm-dd-hh24:mi:ss&token=" + auth_token
+		
+                api_data_url = "https://192.168.1.40:9199/ta/get?token=" + auth_token
+                c = pycurl.Curl()
 		c.setopt(pycurl.URL, api_data_url)
 		c.setopt(pycurl.SSL_VERIFYPEER, 0)
 		c.setopt(pycurl.SSL_VERIFYHOST, 0)
@@ -36,9 +38,9 @@ class Command(BaseCommand):
 		api_data = b.getvalue()
 		api_to_json = json.loads(api_data)
 		# print api_to_json
-		for i in range(0,len(api_to_json["attendance"])):
-			dateObj = datetime.strptime(api_to_json["attendance"][i]["date"], "%Y-%m-%d")
-			attendance_object = Admin(TA = api_to_json["attendance"][i]["rollno"], mac = randomMAC(), deleted = 0)
+		for i in range(0,len(api_to_json["TAs"])):
+			#dateObj = datetime.strptime(api_to_json["attendance"][i]["date"], "%Y-%m-%d")
+			attendance_object = Admin(TA = api_to_json["TAs"][i]["rollno"], mac = randomMAC(), deleted = 0)
 			attendance_object.save()
 		# print randomMAC()
 
