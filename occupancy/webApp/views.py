@@ -36,6 +36,7 @@ def curl_request_addr(address,url):
   ### END - Code to read token - END ###
   url = urllib.quote(url,safe="%/:=&?~#+!$,;'@()*[]")
   api_data_url = address+url+"&token="+auth_token
+  api_data_url = str(url.encode('utf-8')) # done to fix on server
   print api_data_url
   c = pycurl.Curl()
   c.setopt(pycurl.URL, api_data_url)
