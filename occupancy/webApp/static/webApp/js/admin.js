@@ -58,6 +58,9 @@ function setupSubMenuAutoComplete(){
 
 function setupSubMenuButtons(){
   var subMenuOptions=["add","add-mac","upload","del-mac"];
+  $('#add-submit').click(function(){
+    $('#add-form').submit();
+  });
   $.each(subMenuOptions,function(i,el){
     $('#'+el+"-button").click(function(){
       $("#"+el).toggle();

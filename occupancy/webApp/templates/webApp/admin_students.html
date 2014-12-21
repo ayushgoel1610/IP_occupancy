@@ -71,27 +71,28 @@
 </table> -->
 <div id="add" class="sub-menu-window">
   <div class="sub-menu-container">
-    <form>
+    <form id="add-form" action="/template/admin/students/add/" method="post">
+      {% csrf_token %}
       <div class="sub-menu-title">
       Add Teaching Assistant
       </div>
       <div class="sub-menu-options">Roll number:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="rollno">
+      <input type="text" class="form-control valign-this-block" name="rollno" id="rollno">
       </div>
       <div class="sub-menu-options">Name:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="name">
+      <input type="text" class="form-control valign-this-block" name="name" id="name">
       </div>
       <div class="sub-menu-options">Email:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="email">
+      <input type="text" class="form-control valign-this-block" name="email" id="email">
       </div>
       <div class="sub-menu-options">Batch:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="batch">
+      <input type="text" class="form-control valign-this-block" name="batch" id="batch">
       </div>
-      <div class="sub-menu-button btn btn-default btn-lg">
+      <div id="add-submit" class="sub-menu-button btn btn-default btn-lg">
       Add
       </div>
       <div id="add-cancel" class="sub-menu-button btn btn-default btn-lg">
