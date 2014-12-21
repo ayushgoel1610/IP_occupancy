@@ -111,30 +111,31 @@ function alertBox() {
 </div>
 <div id="modify" class="sub-menu-window">
   <div class="sub-menu-container">
-    <form>
+    <form id="modify-form" action="/template/admin/modify/" method="post">
+      {% csrf_token %}
       <div class="sub-menu-title">
       Modify Attendance
       </div>
       <div class="sub-menu-options">Roll number:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="rollno">
+      <input type="text" class="form-control valign-this-block" name="rollno" id="rollno">
       </div>
       <div class="sub-menu-options">Date:</div>
       <div class="form-elements">
-      <input type="text" class="form-control valign-this-block" id="date" placeholder="In format: yyyy-mm-dd">
+      <input type="text" class="form-control valign-this-block" name="date" id="date" placeholder="In format: yyyy-mm-dd">
       </div>
       <div class="sub-menu-options">Set:</div>
       <div class="form-elements valign-this-block">
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary active">
-            <input type="radio" name="set-options" id="option1" checked>Present
+            <input type="radio" name="set-options" value="1" id="option1" checked>Present
           </label>
           <label class="btn btn-primary">
-            <input type="radio" name="set-options" id="option2">Absent
+            <input type="radio" name="set-options" value="0" id="option2">Absent
           </label>
         </div>
       </div>
-      <div class="sub-menu-button btn btn-default btn-lg">
+      <div id="modify-submit" class="sub-menu-button btn btn-default btn-lg">
       Modify
       </div>
       <div id="modify-cancel" class="sub-menu-button btn btn-default btn-lg">

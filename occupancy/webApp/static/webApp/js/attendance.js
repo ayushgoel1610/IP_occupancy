@@ -35,6 +35,9 @@ var calcDataTableHeight = function() {
 
 function setupSubMenu(){
   var subMenuOptions=["download","modify"];
+  $('#modify-submit').click(function(){
+    $('#modify-form').submit();
+  });
   $.each(subMenuOptions,function(i,el){
     $('#'+el+"-button").click(function(){
       $("#"+el).toggle();

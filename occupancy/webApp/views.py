@@ -271,6 +271,20 @@ def admin_insert_ta(request):
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
+
+def admin_modify_attendance(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        rollno = request.POST.get('rollno')
+        date = request.POST.get('date')
+        option = request.POST.get('set-options')
+        stmt = "/attendance/put?rollno="+rollno+"&at="+date+"&format=yyyy-mm-dd&present="+option
+        api_data = curl_request(stmt)
+        print request.POST
+        return HttpResponseRedirect("/template/admin/")
+  return HttpResponse("HelloWorld")
+
 #Nothing
 def admin_insert(request, ta, mac):
 	test = Admin.objects.filter(TA = ta)
