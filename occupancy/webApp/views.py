@@ -260,6 +260,31 @@ def admin_students(request):
   context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data,'access':Access})
   return HttpResponse(template.render(context))
 
+def valid_csv(data):
+  line = data.splitlines()[0]
+  print line
+  return True
+
+def extract_indices(data):
+ # returns a map of 'column name' to index 
+ return
+
+def admin_insert_ta_csv(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        data = request.FILES['upload-file'].read()
+        #perform validity check for csv file
+        if valid_csv(data):
+          indice = extract_indices(data)
+          #loop over file row by row, first creating new students
+  
+          #loop over file row by row, 'put_mac'ing all the macs
+  
+          #done!
+        return HttpResponseRedirect("/template/admin/students/")
+  return HttpResponse("HelloWorld")
+
 def admin_insert_ta(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):
@@ -268,6 +293,7 @@ def admin_insert_ta(request):
         email = request.POST.get('email')
         batch = request.POST.get('batch')
         name = request.POST.get('name')
+        print rollno
         stmt = "/ta/put?rollno="+rollno+"&email="+email+"&batch="+batch+"&name="+name
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")

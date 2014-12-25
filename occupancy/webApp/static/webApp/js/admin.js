@@ -25,7 +25,7 @@ var calcDataTableHeight = function() {
 $(window).resize(function () {
   var oSettings = oTable.fnSettings();
   oSettings.oScroll.sY = calcDataTableHeight(); 
-  oTable.fnDraw();
+  otable.fnDraw();
 });  
 function setupSubMenu(){
   setupSubMenuButtons();
@@ -58,8 +58,29 @@ function setupSubMenuAutoComplete(){
 
 function setupSubMenuButtons(){
   var subMenuOptions=["add","add-mac","upload","del-mac"];
-  $('#add-submit').click(function(){
+  $('#add-submit').click(function(){ //These will be present for all of the above options
     $('#add-form').submit();
+  });
+  $('#upload-submit').click(function(){
+    $('#upload-form').submit();
+  });
+  $('#modify-submit').click(function(){
+    $('#modify-form').submit();
+  });
+  $('#modify #rollno').prop('readonly',true);
+  $('.modify-button').each(function(i,obj){
+    $(this).click(function(){
+      $('#modify').toggle();
+      var row = parseInt($(this).attr("data-value"));
+      var data = otable.row(row).data();
+      $('#modify #rollno').val(data[0]);
+      $('#modify #name').val(data[1]);
+      $('#modify #email').val(data[4]);
+      $('#modify #batch').val(data[2]);
+    });
+  });
+  $("#modify-cancel").click(function(){
+    $('#modify').toggle();
   });
   $.each(subMenuOptions,function(i,el){
     $('#'+el+"-button").click(function(){
@@ -106,9 +127,8 @@ function createTable(){
     row.insertCell(2).innerHTML = toTitleCase(ta.batch);
     row.insertCell(3).innerHTML = ta.macs;
     row.insertCell(4).innerHTML = ta.email;
-		row.insertCell(5).innerHTML = '<button type = "submit" id =' + i +', class="btn btn-default" onClick = "modifyForm(event, this.id)">modify</button>';
-		row.insertCell(6).innerHTML = '<button type = "submit" id =' + i +', class="btn btn-default" onClick = "deleteTA(this.id)">delete</button>';
-
+		row.insertCell(5).innerHTML = '<div data-value="' + i +'" class="modify-button btn btn-default" >modify</div>';
+		row.insertCell(6).innerHTML = '<div id="' + i +'" class="btn btn-default" >delete</div>';
 	}
 }
 var min_tags = 2;

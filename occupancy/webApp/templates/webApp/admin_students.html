@@ -101,6 +101,39 @@
     </form>
   </div>
 </div>
+<div id="modify" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <form id="modify-form" action="/template/admin/students/add/" method="post">
+      {% csrf_token %}
+      <div class="sub-menu-title">
+      Modify Teaching Assistant Details
+      </div>
+      <div class="sub-menu-options">Roll number:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="rollno" id="rollno">
+      </div>
+      <div class="sub-menu-options">Name:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="name" id="name">
+      </div>
+      <div class="sub-menu-options">Email:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="email" id="email">
+      </div>
+      <div class="sub-menu-options">Batch:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="batch" id="batch">
+      </div>
+      <div id="modify-submit" class="sub-menu-button btn btn-default btn-lg">
+      Modify
+      </div>
+      <div id="modify-cancel" class="sub-menu-button btn btn-default btn-lg">
+      Cancel
+      </div>
+    </form>
+  </div>
+</div>
+
 <div id="add-mac" class="sub-menu-window">
   <div class="sub-menu-container">
     <form>
@@ -155,17 +188,18 @@
 </div>
 <div id="upload" class="sub-menu-window">
   <div class="sub-menu-container">
-    <form>
+    <form id="upload-form" action="/template/admin/students/csv/add/" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="sub-menu-title">
       Upload CSV for TAs
       </div>
       <div class="sub-menu-options">File:</div>
       <div class="form-elements valign-this-block" style="margin-top:7px;" >
         <span class="btn btn-default btn-file">
-          Browse for File<input type="file" id="upload-file">
+          Browse for File<input type="file" id="upload-file" name="upload-file">
         </span>
       </div>
-      <div class="sub-menu-button btn btn-default btn-lg">
+      <div id="upload-submit" class="sub-menu-button btn btn-default btn-lg">
       Upload
       </div>
       <div id="upload-cancel" class="sub-menu-button btn btn-default btn-lg">
