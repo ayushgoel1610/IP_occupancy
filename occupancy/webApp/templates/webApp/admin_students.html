@@ -136,24 +136,25 @@
 
 <div id="add-mac" class="sub-menu-window">
   <div class="sub-menu-container">
-    <form>
+    <form id="add-mac-form" action="/template/admin/students/add-mac/" method="post">
+      {% csrf_token %}
       <div class="sub-menu-title">
       Register a New Device
       </div>
       <div class="sub-menu-options">Roll number:</div>
       <div class="form-elements" >
-      <select type="text" class="form-control valign-this-block" id="add-mac-rollno">
+      <select type="text" class="form-control valign-this-block" name="rollno" id="add-mac-rollno">
       </select>
       </div>
       <div class="sub-menu-options">MAC address</div>
       <div class="form-elements" >
-      <input type="text" class="form-control valign-this-block" id="mac">
+      <input type="text" class="form-control valign-this-block" name="mac" id="mac">
       </div>
       <div class="sub-menu-options">Start Date</div>
       <div class="form-elements" >
-      <input type="text" class="form-control valign-this-block" id="date" placeholder="In format: yyyy-mm-dd">
+      <input type="text" class="form-control valign-this-block" name="date" id="date" placeholder="In format: yyyy-mm-dd">
       </div>
-      <div class="sub-menu-button btn btn-default btn-lg">
+      <div id="add-mac-submit" class="sub-menu-button btn btn-default btn-lg">
       Register
       </div>
       <div id="add-mac-cancel" class="sub-menu-button btn btn-default btn-lg">

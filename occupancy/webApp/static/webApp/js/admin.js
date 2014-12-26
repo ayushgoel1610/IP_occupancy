@@ -41,8 +41,8 @@ function setupSubMenuAutoComplete(){
   select2.options.add(new Option("Select Roll Number","null"));
   for (var i=0;i< rollnos.length;i++){
     var d = rollnos[i];
-    select.options.add(new Option(d,i));
-    select2.options.add(new Option(d,i));
+    select.options.add(new Option(d,d));
+    select2.options.add(new Option(d,d));
   }
   select = document.getElementById('del-mac-mac');
   select.options.length = 0;
@@ -63,6 +63,9 @@ function setupSubMenuButtons(){
   });
   $('#upload-submit').click(function(){
     $('#upload-form').submit();
+  });
+  $('#add-mac-submit').click(function(){
+    $('#add-mac-form').submit();
   });
   $('#modify-submit').click(function(){
     $('#modify-form').submit();
