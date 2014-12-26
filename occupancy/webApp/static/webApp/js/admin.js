@@ -67,7 +67,20 @@ function setupSubMenuButtons(){
   $('#modify-submit').click(function(){
     $('#modify-form').submit();
   });
+  $('#del-ta-submit').click(function(){
+    $('#del-ta-form').submit();
+  });
+  $('#del-ta #rollno').prop('readonly',true);
   $('#modify #rollno').prop('readonly',true);
+  $('.del-ta-button').each(function(i,obj){
+    $(this).click(function(){
+      $('#del-ta').toggle();
+      var row = parseInt($(this).attr("data-value"));
+      var data = otable.row(row).data();
+      $('#del-ta #rollno').val(data[0]);
+    });
+  });
+
   $('.modify-button').each(function(i,obj){
     $(this).click(function(){
       $('#modify').toggle();
@@ -81,6 +94,9 @@ function setupSubMenuButtons(){
   });
   $("#modify-cancel").click(function(){
     $('#modify').toggle();
+  });
+  $("#del-ta-cancel").click(function(){
+    $('#del-ta').toggle();
   });
   $.each(subMenuOptions,function(i,el){
     $('#'+el+"-button").click(function(){
@@ -128,7 +144,7 @@ function createTable(){
     row.insertCell(3).innerHTML = ta.macs;
     row.insertCell(4).innerHTML = ta.email;
 		row.insertCell(5).innerHTML = '<div data-value="' + i +'" class="modify-button btn btn-default" >modify</div>';
-		row.insertCell(6).innerHTML = '<div id="' + i +'" class="btn btn-default" >delete</div>';
+		row.insertCell(6).innerHTML = '<div data-value="' + i +'" class="del-ta-button btn btn-default" >delete</div>';
 	}
 }
 var min_tags = 2;

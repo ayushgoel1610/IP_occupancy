@@ -186,6 +186,27 @@
     </form>
   </div>
 </div>
+<div id="del-ta" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <form  id="del-ta-form" action="/template/admin/students/del/" method="post">
+      {% csrf_token %}
+      <div class="sub-menu-title">
+      Delete all Details/Attendance of TA
+      </div>
+      <div class="sub-menu-options">Roll number:</div>
+      <div class="form-elements" >
+      <input type="text" class="form-control valign-this-block" name="rollno" id="rollno">
+      </div>
+      <div id="del-ta-submit" class="sub-menu-button btn btn-default btn-lg">
+      Delete
+      </div>
+      <div id="del-ta-cancel" class="sub-menu-button btn btn-default btn-lg">
+      Cancel
+      </div>
+    </form>
+  </div>
+</div>
+
 <div id="upload" class="sub-menu-window">
   <div class="sub-menu-container">
     <form id="upload-form" action="/template/admin/students/csv/add/" method="post" enctype="multipart/form-data">

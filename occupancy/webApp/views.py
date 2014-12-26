@@ -299,6 +299,17 @@ def admin_insert_ta(request):
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
 
+def admin_delete_ta(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        rollno = request.POST.get('rollno')
+        print rollno
+        stmt = "/ta/del?rollno="+rollno
+        api_data = curl_request(stmt)
+        return HttpResponseRedirect("/template/admin/students/")
+  return HttpResponse("HelloWorld")
+
 def admin_modify_attendance(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):
