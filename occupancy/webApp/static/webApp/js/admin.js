@@ -41,14 +41,16 @@ function setupSubMenuAutoComplete(){
   select2.options.add(new Option("Select Roll Number","null"));
   for (var i=0;i< rollnos.length;i++){
     var d = rollnos[i];
-    select.options.add(new Option(d,d));
-    select2.options.add(new Option(d,d));
+    var o1 = new Option(d,d);
+    select.options.add(o1);
+    select2.options.add(o1);
+    o1.setAttribute("data-index",i);
   }
   select = document.getElementById('del-mac-mac');
   select.options.length = 0;
   select.options.add(new Option("Select Roll number","null"));
   $('#del-mac-rollno').change(function(){
-    var index = parseInt($('#del-mac-rollno').val());
+    var index = parseInt($('option:selected', this).attr("data-index"));
     $('#del-mac-mac').empty();
     for(var i=0;i<json_data.TAs[index].macs.length;i++){
       select.options.add(new Option(json_data.TAs[index].macs[i],json_data.TAs[index].macs[i]));
