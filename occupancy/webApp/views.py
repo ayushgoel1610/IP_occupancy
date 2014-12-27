@@ -310,6 +310,18 @@ def admin_delete_ta(request):
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
 
+def admin_del_mac(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        rollno = request.POST.get('rollno')
+        mac = request.POST.get('mac')
+        stmt = "/ta/del?rollno="+rollno+"&mac="+mac
+        api_data = curl_request(stmt)
+        return HttpResponseRedirect("/template/admin/students/")
+  return HttpResponse("HelloWorld")
+
+
 def admin_add_mac(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):

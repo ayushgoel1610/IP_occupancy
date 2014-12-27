@@ -165,20 +165,21 @@
 </div>
 <div id="del-mac" class="sub-menu-window">
   <div class="sub-menu-container">
-    <form>
+    <form id="del-mac-form" action="/template/admin/students/del-mac/" method="post">
+      {% csrf_token %}
       <div class="sub-menu-title">
       Delete a Device
       </div>
       <div class="sub-menu-options">Roll number:</div>
       <div class="form-elements" >
-      <select type="text" class="form-control valign-this-block" id="del-mac-rollno">
+      <select type="text" class="form-control valign-this-block" id="del-mac-rollno" name="rollno">
       </select>
       </div>
       <div class="sub-menu-options">MAC address</div>
       <div class="form-elements" >
-      <select type="text" class="form-control valign-this-block" id="del-mac-mac"></select>
+      <select type="text" class="form-control valign-this-block" id="del-mac-mac" name="mac"></select>
       </div>
-      <div class="sub-menu-button btn btn-default btn-lg">
+      <div id="del-mac-submit" class="sub-menu-button btn btn-default btn-lg">
       Delete
       </div>
       <div id="del-mac-cancel" class="sub-menu-button btn btn-default btn-lg">

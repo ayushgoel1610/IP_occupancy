@@ -42,9 +42,11 @@ function setupSubMenuAutoComplete(){
   for (var i=0;i< rollnos.length;i++){
     var d = rollnos[i];
     var o1 = new Option(d,d);
+    var o2 = new Option(d,d);
     select.options.add(o1);
-    select2.options.add(o1);
+    select2.options.add(o2);
     o1.setAttribute("data-index",i);
+    o2.setAttribute("data-index",i);
   }
   select = document.getElementById('del-mac-mac');
   select.options.length = 0;
@@ -68,6 +70,9 @@ function setupSubMenuButtons(){
   });
   $('#add-mac-submit').click(function(){
     $('#add-mac-form').submit();
+  });
+  $('#del-mac-submit').click(function(){
+    $('#del-mac-form').submit();
   });
   $('#modify-submit').click(function(){
     $('#modify-form').submit();
