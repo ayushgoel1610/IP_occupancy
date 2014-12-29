@@ -54,7 +54,7 @@ def curl_request(url):
   return curl_request_addr("https://192.168.1.40:9199",url)
 
 def authenticate_user(email):
-  if email in ["digvijay09020@iiitd.ac.in","psingh@iiiitd.ac.in","ayush12029@iiitd.ac.in","ashutosh@iiitd.ac.in"]:
+  if email in ["digvijay09020@iiitd.ac.in","psingh@iiitd.ac.in","ayush12029@iiitd.ac.in","ashutosh@iiitd.ac.in"]:
     return True
   else:
     return False
