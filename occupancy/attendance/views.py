@@ -16,7 +16,7 @@ def index(request):
     handle = open(file_dir,'r')
     auth_token = handle.readline()
     ### END - Code to read token - END ###
-    api_data_url = "https://192.168.1.40:9119/attendance?email="+ str(request.user.email) + "&from=2014-12-01&to=2014-12-31&format=yyyy-mm-dd&token="+ auth_token
+    api_data_url = "https://192.168.1.40:9119/attendance?email="+ str(request.user.email) + "&from=2015-01-01&to=2015-01-31&format=yyyy-mm-dd&token="+ auth_token
     c = pycurl.Curl()
     c.setopt(pycurl.URL, api_data_url)
     c.setopt(pycurl.SSL_VERIFYPEER, 0)
