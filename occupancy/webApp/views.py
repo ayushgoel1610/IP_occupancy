@@ -260,14 +260,73 @@ def admin_students(request):
   context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data,'access':Access})
   return HttpResponse(template.render(context))
 
+def valid_column_names(column_names):
+  # These are the absolute core required names
+  valid_names = ['roll no.','name','email id','batch']
+  for valid_name in valid_names:
+    if valid_name not in column_names:
+      return False
+  return True
+
 def valid_csv(data):
-  line = data.splitlines()[0]
-  print line
+  # Gets number of columns in first line.
+  # All lines should contain same number of columns :)
+  csv_lines = data.splitlines()
+  column_names = csv_lines[0].split(',')
+  column_names = [name.lower() for name in column_names]
+  if not valid_column_names(column_names):
+    return False
+  # Loop over and find all column names
+  columns = 0
+  for line in csv_lines:
+    line_columns = len(line.split(','))
+    if columns == 0:
+      columns = line_columns
+    elif columns != line_columns:
+      return False
   return True
 
 def extract_indices(data):
- # returns a map of 'column name' to index 
- return
+ # returns a map of 'column name' to index
+ line = data.splitlines()[0]
+ indice = {}
+ i=0; # iterator
+ for column_name in line.split(','):
+   indice[column_name.lower()] = i
+   i = i + 1
+ return indice
+
+def get_student_info(data,indice):
+  firstLine = True
+  all_students_info = []
+  for line in data.splitlines():
+    if firstLine :
+      firstLine = False
+      continue
+    student_info = {}
+    words = line.split(',')
+    for column_names in indice.keys():
+      student_info[column_names] = words[indice[column_names]]
+    all_students_info.append(student_info)
+  return all_students_info
+
+def push_student_info(all_student_info):
+  for student_info in all_student_info:
+    stmt = "/ta/put?rollno="+student_info['roll no.']+"&email="+student_info['email id']+"&batch="+student_info['batch']+"&name="+student_info['name']
+    print stmt
+    api_data = curl_request(stmt)
+
+def push_student_macs(all_student_info):
+  for student_info in all_student_info:
+    count = 1
+    for i in range(len(student_info.keys())):
+      device_string = 'device '+str(count)
+      if device_string in student_info.keys():
+        stmt = "/ta/put?rollno="+student_info['roll no.']+"&mac="+student_info[device_string]
+        api_data = curl_request(stmt)
+        count = count + 1
+      else:
+        break # last device string not found. No point in looking for more
 
 def admin_insert_ta_csv(request):
   if request.user and request.user.is_authenticated():
@@ -277,10 +336,11 @@ def admin_insert_ta_csv(request):
         #perform validity check for csv file
         if valid_csv(data):
           indice = extract_indices(data)
-          #loop over file row by row, first creating new students
-  
+          all_student_info = get_student_info(data,indice)
+          #loop over student info row by row, first creating new students
+          push_student_info(all_student_info)
           #loop over file row by row, 'put_mac'ing all the macs
-  
+          push_student_macs(all_student_info)
           #done!
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
@@ -328,8 +388,6 @@ def admin_add_mac(request):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
         mac = request.POST.get('mac')
-        print rollno
-        print mac
         stmt = "/ta/put?rollno="+rollno+"&mac="+mac
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
