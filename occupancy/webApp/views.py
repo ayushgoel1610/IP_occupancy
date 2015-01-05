@@ -406,6 +406,47 @@ def admin_modify_attendance(request):
         return HttpResponseRedirect("/template/admin/")
   return HttpResponse("HelloWorld")
 
+def generate_attendance_csv(first_date,last_date,api_data):
+  delta = last_date - first_date
+  api_to_json = json.loads(api_data)
+  attendance =[]
+  column_names=['']
+  for i in range (delta.days + 1):
+    str_date = (first_date + timedelta(days=i)).strftime('%Y-%m-%d')
+    column_names.append(str_date)
+  attendance.append(column_names)
+  for json_student_attendance in api_to_json["attendance"]:
+    student_attendance = []
+    student_attendance.append(json_student_attendance["rollno"])
+    for i in range (delta.days + 1): #Inefficient. Can be done O(k) where k is the number present dates. RIght now it is in O(nk) where n is the number of dates
+      str_date = (first_date + timedelta(days=i)).strftime('%Y-%m-%d')
+      if str_date in json_student_attendance["present_dates"]:
+        student_attendance.append('P')
+      else:
+        student_attendance.append('A')
+    attendance.append(student_attendance)
+  response = HttpResponse(content_type = "text/csv")
+  response['Content-Disposition'] = 'attachment; filename="TA_Attendance.csv"'
+  csv_writer = csv.writer(response)
+  csv_writer.writerows(attendance)
+  return response
+
+def admin_download_attendance(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        month = request.POST.get('month')
+        first_date_str = month+'-01'
+        first_date = datetime.strptime(first_date_str,"%Y-%m-%d")
+        last_date_str = month + '-'+ str(last_day_of_month(first_date).day)
+        last_date = datetime.strptime(last_date_str,"%Y-%m-%d")
+        stmt = "/attendance/get?from="+first_date_str+"&to="+last_date_str+"&format=yyyy-mm-dd"
+        api_data = curl_request(stmt)
+        response = generate_attendance_csv(first_date,last_date,api_data)
+        return response
+  return HttpResponse("HelloWorld")
+
+
 #Nothing
 def admin_insert(request, ta, mac):
 	test = Admin.objects.filter(TA = ta)
