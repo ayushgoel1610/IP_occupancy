@@ -27,7 +27,7 @@
 				center: 'title',
 				right: ''
 			},
-			defaultDate: '2015-01-01',
+			//defaultDate: '2015-01-01',
 			editable: false,
 			eventLimit: true, // allow "more" link when too many events
 			events: [
@@ -133,17 +133,14 @@
 </style>
 </head>
 <body>
-  <div id='popup'>Welcome!<br> For any queries/feedback/complaints contact digvijay09020@iiitd.ac.in </div>
   <div id='header'>
   Attendance
   </div>
   <div id='all-container'>
     <div id='nav-bar'>
       <!-- Show list of user devices -->
-      <div class='nav-element'>{{ user.email }}</div>
-      <div class='nav-element'></div>
-
-      <div id='contact' class='nav-element highlight'>Contact</div>
+      <div class='nav-element'>Roll No:{{ info.rollno }}</div>
+      <div class='nav-element'>{{ info.macs }}</div>
       <div class='nav-element highlight'>
       {% if user and not user.is_anonymous %}
       <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
