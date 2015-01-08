@@ -16,7 +16,7 @@ def index(request):
     handle = open(file_dir,'r')
     auth_token = handle.readline()
     ### END - Code to read token - END ###
-    api_data_url = "https://192.168.1.40:9119/attendance?email="+ str(request.user.email) + "&from=2015-01-01&to=2015-01-31&format=yyyy-mm-dd&token="+ auth_token
+    api_data_url = "https://192.168.1.40:9199/attendance/get?email="+ str(request.user.email) + "&from=2015-01-01&to=2015-01-31&format=yyyy-mm-dd&token="+ auth_token
     c = pycurl.Curl()
     c.setopt(pycurl.URL, api_data_url)
     c.setopt(pycurl.SSL_VERIFYPEER, 0)
@@ -29,8 +29,8 @@ def index(request):
     api_data = b.getvalue()
     print api_data
     jdata = json.loads(api_data)
-    for date_iterator in jdata["attendance"]:
-      dates.append(date_iterator["date"])
+    for date_iterator in jdata["present_dates"]:
+      dates.append(date_iterator)
     print dates
   template = loader.get_template('attendance/index.html');
   context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates})
