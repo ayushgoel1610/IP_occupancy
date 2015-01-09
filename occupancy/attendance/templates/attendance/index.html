@@ -115,7 +115,7 @@
   <div id='all-container'>
     <div id='nav-bar'>
       <!-- Show list of user devices -->
-      <div class='nav-element'>Roll No:{{ info.rollno }}</div>
+      <div class='nav-element'>Roll No:{{ info.rollno|upper }}</div>
       <div class='nav-element'>Macs:{% for mac in info.macs %}
       {{ mac }}
       {% endfor %}
