@@ -39,7 +39,7 @@ def index(request):
   dates = []
   ta_info_json = {}
   if request.user and request.user.is_authenticated() :
-    api_data_url = "/attendance/get?email="+ str(request.user.email) + "&from=2015-01-01&to=2015-01-31&format=yyyy-mm-dd"
+    api_data_url = "/attendance/get?email="+ str(request.user.email) + "&from=2015-02-01&to=2015-02-28&format=yyyy-mm-dd"
     api_data = curl_request(api_data_url)
     stmt = "/ta/get?email=" + str(request.user.email)
     jdata = json.loads(api_data)
