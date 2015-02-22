@@ -37,9 +37,34 @@
           start: '{{date_iterator}}'
         },
       {% endfor %}
+      {% for date_iterator in positive_exceptions %}
+        {
+          title: 'Holiday',
+          start: '{{date_iterator}}',
+          color: '#d86b6b'
+        },
+      {% endfor %}
+      {% for date_iterator in negative_exceptions %}
+        {
+          title: 'Working',
+          start: '{{date_iterator}}',
+          color: '#d86b6b',
+        },
+      {% endfor %}
+
 			]
 		});
-		
+    $('.fc-sat').css('background','#a3c98e');
+    $('.fc-sun').css('background','#a3c98e');
+    {% for date_iterator in dates %}
+
+  	  $('.fc-day[data-date="' + '{{date_iterator}}' + '"]').css('background', '#3a87ad');	
+    {% endfor %}
+    {% for date_iterator in positive_exceptions %}
+  	  $('.fc-day[data-date="' + '{{date_iterator}}' + '"]').css('background', '#d86b6b');	
+    {% endfor %}
+
+
 	});
 
 </script>
