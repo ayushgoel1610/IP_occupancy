@@ -32,7 +32,7 @@ def curl_request_addr(address,url):
   return api_data
 
 def curl_request(url):
-  return curl_request_addr("https://127.0.0.1:9119",url)
+  return curl_request_addr("https://192.168.1.40:9199",url)
 
 def date_string():
   return "&from=2015-02-01&to=2015-02-28&format=yyyy-mm-dd"
