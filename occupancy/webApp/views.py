@@ -410,20 +410,25 @@ def generate_attendance_csv(first_date,last_date,api_data):
   delta = last_date - first_date
   api_to_json = json.loads(api_data)
   attendance =[]
-  column_names=['']
+  column_names=['rollno','batch']
   for i in range (delta.days + 1):
-    str_date = (first_date + timedelta(days=i)).strftime('%Y-%m-%d')
-    column_names.append(str_date)
+    iter_date = first_date + timedelta(days=i)
+    if iter_date.weekday() < 5:
+      str_date = (first_date + timedelta(days=i)).strftime('%Y-%m-%d')
+      column_names.append(str_date)
   attendance.append(column_names)
   for json_student_attendance in api_to_json["attendance"]:
     student_attendance = []
     student_attendance.append(json_student_attendance["rollno"])
+    student_attendance.append(json_student_attendance["batch"])
     for i in range (delta.days + 1): #Inefficient. Can be done O(k) where k is the number present dates. RIght now it is in O(nk) where n is the number of dates
       str_date = (first_date + timedelta(days=i)).strftime('%Y-%m-%d')
-      if str_date in json_student_attendance["present_dates"]:
-        student_attendance.append('P')
-      else:
-        student_attendance.append('A')
+      iter_date = first_date + timedelta(days=i)
+      if iter_date.weekday() < 5:
+        if str_date in json_student_attendance["present_dates"]:
+          student_attendance.append('P')
+        else:
+          student_attendance.append('A')
     attendance.append(student_attendance)
   response = HttpResponse(content_type = "text/csv")
   response['Content-Disposition'] = 'attachment; filename="TA_Attendance.csv"'
