@@ -6,6 +6,7 @@ import json
 import os, csv
 import StringIO
 import urllib
+from datetime import *
 # Create your views here.
 
 def curl_request_addr(address,url):
@@ -34,8 +35,15 @@ def curl_request_addr(address,url):
 def curl_request(url):
   return curl_request_addr("https://192.168.1.40:9199",url)
 
+def last_day_of_month(any_day):
+  next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
+  return next_month - timedelta(days=next_month.day)
+
 def date_string():
-  return "&from=2015-02-01&to=2015-02-28&format=yyyy-mm-dd"
+  today = date.today()
+  first_day = str(today.year)+"-"+str(today.month)+"-01"
+  last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
+  return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
 
 def index(request):
   dates = []
