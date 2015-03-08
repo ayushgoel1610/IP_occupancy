@@ -146,6 +146,57 @@ function alertBox() {
     </form>
   </div>
 </div>
+<div id="exception-add" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <form id="exception-add-form" action="/template/admin/exception/add/" method="post">
+      {% csrf_token %}
+      <div class="sub-menu-title">
+      Add Exception Date
+      </div>
+      <div class="sub-menu-options">Date:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="date" id="date" placeholder="In format: yyyy-mm-dd">
+      </div>
+      <div class="sub-menu-options">Type:</div>
+      <div class="form-elements valign-this-block">
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary active">
+            <input type="radio" name="set-options" value="0" id="option1" checked>Positive
+          </label>
+          <label class="btn btn-primary">
+            <input type="radio" name="set-options" value="1" id="option2">Negative
+          </label>
+        </div>
+      </div>
+      <div id="exception-add-submit" class="sub-menu-button btn btn-default btn-lg">
+      Add
+      </div>
+      <div id="exception-add-cancel" class="sub-menu-button btn btn-default btn-lg">
+      Close
+      </div>
+    </form>
+  </div>
+</div>
+<div id="exception-del" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <form id="exception-del-form" action="/template/admin/exception/del/" method="post">
+      {% csrf_token %}
+      <div class="sub-menu-title">
+      Remove Exception Date
+      </div>
+      <div class="sub-menu-options">Date:</div>
+      <div class="form-elements">
+      <input type="text" class="form-control valign-this-block" name="date" id="date" placeholder="In format: yyyy-mm-dd">
+      </div>
+      <div id="exception-del-submit" class="sub-menu-button btn btn-default btn-lg">
+      Remove
+      </div>
+      <div id="exception-del-cancel" class="sub-menu-button btn btn-default btn-lg">
+      Close
+      </div>
+    </form>
+  </div>
+</div>
 <div id="my-content" >
   <div id="header">
     <div id="title">
@@ -157,6 +208,8 @@ function alertBox() {
       <!--div class="toolbar-element">Show Attendance</div-->
       <div id="download-button" class="toolbar-element">Download Attendance</div>
       <div id="modify-button" class="toolbar-element">Modify Attendance</div>
+      <div id="exception-add-button" class="toolbar-element">Add Exception Date</div>
+      <div id="exception-del-button" class="toolbar-element">Remove Exception</div>
       <!--div class="toolbar-element">Change Timings</div>
       <div class="toolbar-element">Recalculate Attendance</div-->
     </div>

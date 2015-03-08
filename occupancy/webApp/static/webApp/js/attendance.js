@@ -34,7 +34,7 @@ var calcDataTableHeight = function() {
 };
 
 function setupSubMenu(){
-  var subMenuOptions=["download","modify"];
+  var subMenuOptions=["download","modify","exception-add","exception-del"];
   $.each(subMenuOptions,function(i,el){
     $('#'+el+"-button").click(function(){
       $("#"+el).toggle();
@@ -106,6 +106,9 @@ function dynamictable(){
 	}
 	console.log(count_array);
 }
+function not_in_exception(date){
+  return true;
+}
 
 function generate_header(){
 	var long_months = new Array(0,2,4,6,7,9,11);
@@ -116,13 +119,17 @@ function generate_header(){
 	// 	length_col = 31;
 	// else length_col = 30;
 	for (i=0;i<numberdays;i++){
-		header_dates.push(date_to_string(head_date));
-			if (head_date.getDate() == length_col){
-				head_date.setMonth(parseInt(head_date.getMonth()) + 1);
-				head_date.setDate(1);
-			}
-			else head_date.setDate(parseInt(head_date.getDate()) + 1 );
+    var dow = head_date.getDay();
+    if((dow != 0 && dow != 6) && not_in_exception(head_date)){
+      header_dates.push(date_to_string(head_date));
+    }
+	  if (head_date.getDate() == length_col){
+			head_date.setMonth(parseInt(head_date.getMonth()) + 1);
+			head_date.setDate(1);
+		}
+		else head_date.setDate(parseInt(head_date.getDate()) + 1 );
 	}
+  numberdays = header_dates.length;
 	// console.log(header_dates);
 }
 

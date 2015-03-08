@@ -436,6 +436,30 @@ def generate_attendance_csv(first_date,last_date,api_data):
   csv_writer.writerows(attendance)
   return response
 
+def admin_add_exception(request):
+  print "here111\n"
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      print "here"
+      if request.method=='POST':
+        date = request.POST.get('date')
+        option = request.POST.get('set-options')
+        stmt = "/exception/put?at="+date+"&format=yyyy-mm-dd&type="+option
+        api_data = curl_request(stmt)
+        return HttpResponseRedirect("/template/admin/")
+  return HttpResponse("HelloWorld")
+
+def admin_del_exception(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        date = request.POST.get('date')
+        option = request.POST.get('set-options')
+        stmt = "/exception/del?at="+date+"&format=yyyy-mm-dd"
+        api_data = curl_request(stmt)
+        return HttpResponseRedirect("/template/admin/")
+  return HttpResponse("HelloWorld")
+
 def admin_download_attendance(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):
