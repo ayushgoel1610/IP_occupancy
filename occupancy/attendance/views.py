@@ -40,11 +40,25 @@ def last_day_of_month(any_day):
   return next_month - timedelta(days=next_month.day)
 
 def default_date(month):
-  today = datetime.strptime("01 "+month+" 15","%d %m %y")
+  int_month = date.today().month
+  try:
+    tmp = int(month)
+    if tmp >= 1 and tmp <= 12:
+      int_month = tmp
+  except:
+    a = 1
+  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
   return str(today)
 
 def date_string(month):
-  today = datetime.strptime("01 "+month+" 15","%d %m %y")
+  int_month = date.today().month
+  try:
+    tmp = int(month)
+    if tmp >= 1 and tmp <= 12:
+      int_month = tmp
+  except:
+    a = 1
+  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
   first_day = str(today.year)+"-"+str(today.month)+"-01"
   last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
   return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
