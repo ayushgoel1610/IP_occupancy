@@ -7,6 +7,7 @@
 
 <link href="{% static 'attendance/fullcalendar.css' %}" rel='stylesheet' />
 <link href='{% static 'attendance/fullcalendar.print.css' %}' rel='stylesheet' media='print' />
+<link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap.min.css" media="screen" >
 <script src='{% static 'attendance/lib/moment.min.js' %}'></script>
 <script src='{% static 'attendance/lib/jquery.min.js' %}'></script>
 <script src='{% static 'attendance/fullcalendar.min.js' %}'></script>
@@ -17,6 +18,13 @@
      $('#contact').click(function() {
       $('#popup').slideToggle("fast");
     });
+     $('#prev').click(function(){
+       window.location = "http://nms.iiitd.edu.in:9128/attendance/?m="+(parseInt("{{ month }}")-1);
+     });
+     $('#next').click(function(){
+       window.location = "http://nms.iiitd.edu.in:9128/attendance/?m="+(parseInt("{{ month }}")+1);
+     });
+
     $('#popup').click(function(){
       $(this).slideToggle("fast");
     });  
@@ -27,7 +35,8 @@
 				center: 'title',
 				right: ''
 			},
-			//defaultDate: '2015-01-01',
+      
+			defaultDate: '{{ default_date }}',
 			editable: false,
 			eventLimit: true, // allow "more" link when too many events
 			events: [
@@ -131,6 +140,20 @@
     text-decoration:none;
     color:inherit;
   }
+  #button-container{
+    float:left;
+    width:100%;
+    display:block;
+  }
+  #prev{
+    margin-left:20%;
+  }
+  #next{
+  }
+  .my-button{
+    width:30%;
+    margin:0px;
+  }
 </style>
 </head>
 <body>
@@ -154,6 +177,10 @@
       {% endif %}
       </div>
  </div>
+    <div id="button-container">
+      <div id="prev" class="btn btn-primary my-button">Prev Month</div>
+      <div id="next" class="btn btn-success my-button">Next Month</div>
+    </div>
   	<div id='calendar'>
     </div>
   </div>

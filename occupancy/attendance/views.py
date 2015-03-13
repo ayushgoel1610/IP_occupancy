@@ -39,19 +39,25 @@ def last_day_of_month(any_day):
   next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
   return next_month - timedelta(days=next_month.day)
 
-def date_string():
-  today = date.today()
+def default_date(month):
+  today = datetime.strptime("01 "+month+" 15","%d %m %y")
+  return str(today)
+
+def date_string(month):
+  today = datetime.strptime("01 "+month+" 15","%d %m %y")
   first_day = str(today.year)+"-"+str(today.month)+"-01"
   last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
   return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
 
 def index(request):
+  month = 1
   dates = []
   p_exceptions = []
   n_exceptions = []
   ta_info_json = {}
   if request.user and request.user.is_authenticated() :
-    api_data_url = "/attendance/get?email="+ str(request.user.email) + date_string()
+    month = request.GET.get('m',str(date.today().month))
+    api_data_url = "/attendance/get?email="+ str(request.user.email) + date_string(month)
     api_data = curl_request(api_data_url)
     stmt = "/ta/get?email=" + str(request.user.email)
     jdata = json.loads(api_data)
@@ -60,7 +66,7 @@ def index(request):
     for date_iterator in jdata["present_dates"]:
       dates.append(date_iterator)
     print dates
-    api_url = "/exceptions/get?" + date_string()
+    api_url = "/exceptions/get?" + date_string(month)
     api_data = curl_request(api_url)
     exceptions_j = json.loads(api_data)
     for date_iterator in exceptions_j["positive exceptions"]:
@@ -68,5 +74,5 @@ def index(request):
     for date_iterator in exceptions_j["negative exceptions"]:
       n_exceptions.append(date_iterator)
   template = loader.get_template('attendance/index.html');
-  context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions})
+  context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':month})
   return HttpResponse(template.render(context))
