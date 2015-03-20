@@ -354,7 +354,7 @@ def admin_insert_ta(request):
         batch = request.POST.get('batch')
         name = request.POST.get('name')
         print rollno
-        stmt = "/ta/put?rollno="+rollno+"&email="+email+"&batch="+batch+"&name="+name
+        stmt = "/ta/put?rollno="+rollno+"&email="+email+"&batch="+batch+"&name="+name+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
@@ -365,7 +365,7 @@ def admin_delete_ta(request):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
         print rollno
-        stmt = "/ta/del?rollno="+rollno
+        stmt = "/ta/del?rollno="+rollno+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
@@ -376,7 +376,7 @@ def admin_del_mac(request):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
         mac = request.POST.get('mac')
-        stmt = "/ta/del?rollno="+rollno+"&mac="+mac
+        stmt = "/ta/del?rollno="+rollno+"&mac="+mac+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
@@ -388,7 +388,7 @@ def admin_add_mac(request):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
         mac = request.POST.get('mac')
-        stmt = "/ta/put?rollno="+rollno+"&mac="+mac
+        stmt = "/ta/put?rollno="+rollno+"&mac="+mac+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
@@ -400,7 +400,7 @@ def admin_modify_attendance(request):
         rollno = request.POST.get('rollno')
         date = request.POST.get('date')
         option = request.POST.get('set-options')
-        stmt = "/attendance/put?rollno="+rollno+"&at="+date+"&format=yyyy-mm-dd&present="+option
+        stmt = "/attendance/put?rollno="+rollno+"&at="+date+"&format=yyyy-mm-dd&present="+option+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         print request.POST
         return HttpResponseRedirect("/template/admin/")
@@ -444,7 +444,7 @@ def admin_add_exception(request):
       if request.method=='POST':
         date = request.POST.get('date')
         option = request.POST.get('set-options')
-        stmt = "/exception/put?at="+date+"&format=yyyy-mm-dd&type="+option
+        stmt = "/exception/put?at="+date+"&format=yyyy-mm-dd&type="+option+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/")
   return HttpResponse("HelloWorld")
@@ -455,7 +455,7 @@ def admin_del_exception(request):
       if request.method=='POST':
         date = request.POST.get('date')
         option = request.POST.get('set-options')
-        stmt = "/exception/del?at="+date+"&format=yyyy-mm-dd"
+        stmt = "/exception/del?at="+date+"&format=yyyy-mm-dd&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/")
   return HttpResponse("HelloWorld")
