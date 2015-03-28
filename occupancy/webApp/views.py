@@ -62,16 +62,22 @@ def authenticate_user(email):
 def admin_attendance(request):
   Access = 0
   api_data = {}
+  holidays=[]
+  working_days=[]
   if request.user and request.user.is_authenticated() :
     if authenticate_user(request.user.email.lower()):
       today = date.today()
       first_day = str(today.year)+"-"+str(today.month)+"-01"
       last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
       stmt = "/attendance/get?from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
-      api_data = curl_request(stmt);
+      api_data = curl_request(stmt)
+      stmt2 = "/exceptions/get?from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
+      exceptions_data = json.loads(curl_request(stmt2))
+      holidays = exceptions_data["positive exceptions"]
+      working_days = exceptions_data["negative exceptions"]
       Access=1
   template = loader.get_template('webApp/attendance.html');
-  context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data,'access':Access})
+  context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data,'access':Access,'holidays':holidays,'working_days':working_days})
   return HttpResponse(template.render(context))
 
 def attendance_CSV(request):

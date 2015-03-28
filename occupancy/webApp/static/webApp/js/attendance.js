@@ -47,9 +47,15 @@ function setupSubMenu(){
     });
 
   });
-  $('#admin-logs-button').click(function(){
-    window.open("http://nms.iiitd.edu.in:9128/template/admin/logs/","Logs","width=600px,height=400px");
+  $('#exceptions-view-button').click(function(){
+    $('#exceptions-view').toggle();
   });
+  $('#exceptions-view-cancel').click(function(){
+    $('#exceptions-view').toggle();
+  });
+/*  $('#admin-logs-button').click(function(){
+    window.open("http://nms.iiitd.edu.in:9128/template/admin/logs/","Logs","width=600px,height=400px");
+  });*/
 };
 function setupToolbar(){
   $('#table_id_filter').css('float','left');

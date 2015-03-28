@@ -198,6 +198,48 @@ function alertBox() {
     </form>
   </div>
 </div>
+<div id="exceptions-view" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <div class="sub-menu-title">
+    List of Exceptions
+    </div>
+    <table data-pagination="true" id="exceptions-table-holiday" data-toggle="table" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Holidays</th>
+          </tr>
+        </thead>
+        {% for holiday in holidays %}
+        <tr>
+          <td> {{holiday}}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td> N/A</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table data-pagination="true" id="exceptions-table-working-days" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Working Days</th>
+          </tr>
+        </thead>
+        {% for working_day in working_days %}
+        <tr>
+          <td> {{working_day}}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td> N/A</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div id="exceptions-view-cancel" class="sub-menu-button btn btn-default btn-lg">
+    Close
+    </div>
+  </div>
+</div>
 <div id="my-content" >
   <div id="header">
     <div id="title">
@@ -211,7 +253,8 @@ function alertBox() {
       <div id="modify-button" class="toolbar-element">Modify Attendance</div>
       <div id="exception-add-button" class="toolbar-element">Add Exception Date</div>
       <div id="exception-del-button" class="toolbar-element">Remove Exception</div>
-      <div id="admin-logs-button" class="toolbar-element">View Admin Logs</div>
+  <div id="exceptions-view-button" class="toolbar-element">View Exceptions</div>
+      <!--div id="admin-logs-button" class="toolbar-element">View Admin Logs</div-->
       <!--div class="toolbar-element">Change Timings</div>
       <div class="toolbar-element">Recalculate Attendance</div-->
     </div>
@@ -228,6 +271,10 @@ function alertBox() {
 {% endif %}
   		</table>
   	</div>
+  </div>
+  <div id="my-console">
+    <iframe src="http://nms.iiitd.edu.in:9128/template/admin/logs/">
+    </iframe>
   </div>
 </div>
 
