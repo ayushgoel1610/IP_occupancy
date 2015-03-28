@@ -475,6 +475,32 @@ def admin_download_attendance(request):
         return response
   return HttpResponse("HelloWorld")
 
+def logs_table(api_data):
+  html = "<HTML><BODY><table style=\"border:1px solid grey;width:100%;text-align:left;\">"
+  json_api_data = json.loads(api_data)
+  print api_data
+  html+="<tr>"
+  html+="<th>Timestamp</th><th>Action</th><th>User</th>"
+  html+="<th>Arguments</th>"
+  html+="</tr>"
+  for log in json_api_data["logs"]:
+    html += "<tr>"
+    html += "<td>"+log["ts"]+"</td><td>"+log["action"]+"</td><td>"
+    html += log["email"]+"</td><td>"+log["arguments"]+"<td>"
+    html += "</tr>"
+  html += "</BODY></HTML>"
+  return html
+
+
+def admin_logs_view(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      today = date.today()
+      first_day = str(today.year)+"-"+str(today.month)+"-01"
+      last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
+      stmt = "/logs/get?from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
+      api_data = curl_request(stmt)
+      return HttpResponse(logs_table(api_data))
 
 #Nothing
 def admin_insert(request, ta, mac):
