@@ -23,7 +23,6 @@
 
 </head>
 <body>
-  {% if access == 1 %}
 	<input type = "hidden" id = "json" value = "{{json}}">
 	<nav class="navbar navbar-custom" role="navigation">
   <div class="container-fluid">
@@ -56,19 +55,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-<!-- <table>
-    <tr>
-        <td onclick="function()">AAA</td>
-        <td onclick="function()">BBB</td>
-        <td onclick="function()">CCC</td>
-    </tr>
-        <tr>
-        <td onclick="function()">DDD</td>
-        <td onclick="function()">EEE</td>
-        <td onclick="function()">FFF</td>
-    </tr>
-</table> -->
+{% if access == 1 %}
 <div id="add" class="sub-menu-window">
   <div class="sub-menu-container">
     <form id="add-form" action="/template/admin/students/add/" method="post">
@@ -247,48 +234,23 @@
     </div>
     <div id = "table-container" class ="display" >
       <table id="table_id" class="display">
+
       </table>
     </div>
   </div>
+  {% elif user.username != "" %}
+  <div class="alert alert-danger" role="alert">
+    <p class = "lead">Not authorized to view the data.</p>
+  </div>
+  {% else %}
+  <div class="alert alert-success" role="alert">
+    <p class = "lead">Login to view the data</p>
+  </div>
+{% endif %}
 </div>
   <!--/div-->
 
-{% else %}
-<input type = "hidden" id = "json" value = "{{json}}">
-  <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> -->
-      <a class="navbar-brand" href="/template/home"> <span class="glyphicon glyphicon-home"></span> NMS-occupancy</a>
-    </div>
-    <ul class="nav navbar-nav navbar-right">
-          <!-- <li>{{user.username}}</li> -->
-          {% if user and not user.is_anonymous %}
-          <li><a href="{% url 'auth:logout' %}?next={{ request.path }}"> <span class="glyphicon glyphicon-user"></span> Logout</a></li>
-          {% else %}
-          <li><a href = "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"><i class="glyphicon glyphicon-user"></i>  Login
-          </a></li>
-          {% endif %}
-        </ul>
-      </div>
-    </nav>
-      {% if user and not user.is_anonymous %}
-        <div class="alert alert-success" role="alert">
-          <p class = "lead">Not authorized to view the data.</p>
-          
-        </div>
-        {%else%}
-        <div class="alert alert-success" role="alert">
-        <p class = "lead">Login to access Admin Page</p>
-        </div>
-        {%endif%}
-{% endif %}
+
 
 
 
