@@ -505,8 +505,11 @@ def admin_logs_view(request):
       first_day = str(today.year)+"-"+str(today.month)+"-01"
       last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
       stmt = "/logs/get?from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
-      api_data = curl_request(stmt)
-      return HttpResponse(logs_table(api_data))
+      api_data = json.loads(curl_request(stmt))["logs"]
+      template = loader.get_template('webApp/log.html');
+      context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data})
+      return HttpResponse(template.render(context))
+  return HttpResponse('Hello World')
 
 #Nothing
 def admin_insert(request, ta, mac):

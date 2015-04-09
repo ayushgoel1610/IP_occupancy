@@ -1,0 +1,23 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap.min.css" media="screen" /> 
+</head>
+<body>
+  <table class="table table-hover table-striped table-bordered">
+    <tr>
+      <th>Timestamp</th>
+      <th>Action</th>
+      <th>User</th>
+      <th>Arguments</th>
+    </tr>
+    {% for log in json %}
+    <tr>
+      <td>{{log.ts}}</td>
+      <td>{{log.action}}</td>
+      <td>{{log.email}}</td>
+      <td>{{log.arguments}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
