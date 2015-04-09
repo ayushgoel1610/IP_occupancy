@@ -69,7 +69,8 @@ iframe{
     color:#cc3333;
 }
 .navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
-    color: #cc3333;
+    color: #FFFFFF;
+    background-color:#3FADA8;
 }
 .navbar-custom .navbar-brand {
     color:#111;
