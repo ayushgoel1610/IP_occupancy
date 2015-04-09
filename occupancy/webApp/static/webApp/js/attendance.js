@@ -16,6 +16,7 @@ $(document).ready( function () {
     oTable.fnDraw();
   });
   setupToolbar();
+  setupMainMenu();
   setupSubMenu();
 /*  $('#download-button').click(function(){
     $('#download').toggle();
@@ -32,6 +33,25 @@ var numberdays;
 var calcDataTableHeight = function() {
   return $(window).height()*40/100;
 };
+
+function setupMainMenu(){
+  $(".dropdown").hover(
+    function() {
+      $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+      $(this).toggleClass('open');
+    },
+    function() {
+      $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+      $(this).toggleClass('open');
+    });
+};
+/*  var mainMenuOptions=["attendance"];
+  $.each(mainMenuOptions,function(i,el){
+    $('#'+el+"-nav-button").hover(function(){
+      $("#"+el+"-nav-button").dropdown('toggle');
+    });
+  });
+};*/
 
 function setupSubMenu(){
   var subMenuOptions=["download","modify","exception-add","exception-del"];
@@ -52,6 +72,12 @@ function setupSubMenu(){
   });
   $('#exceptions-view-cancel').click(function(){
     $('#exceptions-view').toggle();
+  });
+  $('#logs-view-button').click(function(){
+    $('#logs-view').toggle();
+  });
+  $('#logs-view-cancel').click(function(){
+    $('#logs-view').toggle();
   });
 /*  $('#admin-logs-button').click(function(){
     window.open("http://nms.iiitd.edu.in:9128/template/admin/logs/","Logs","width=600px,height=400px");

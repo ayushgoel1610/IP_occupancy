@@ -78,6 +78,21 @@ iframe{
 #download{
 
 }
+.sub-menu-window-big{
+  width:1000px;
+  min-width:800px;
+/*  height:354px;*/
+  min-height:600px;
+  display:none;
+  position:fixed;
+  left:50%;
+  top:50%;
+  border-bottom:2px solid #e6e6e6;
+  -webkit-transform:translate(-50%,-50%); 
+  -moz-transform:translate(-50%,-50%);
+  background-color:#e6e6e6;
+  z-index:2000;
+}
 
 .sub-menu-window{
   width:554px;
@@ -92,7 +107,7 @@ iframe{
   -webkit-transform:translate(-50%,-50%); 
   -moz-transform:translate(-50%,-50%);
   background-color:#e6e6e6;
-  z-index:100;
+  z-index:2000;
 }
 .sub-menu-container{
 /*  height:350px;*/
@@ -104,6 +119,17 @@ iframe{
   padding:50px 50px 50px 50px;
   background-color:white;
 }
+.sub-menu-container-big{
+/*  height:350px;*/
+  min-height:590px;
+  width:990px;
+  min-width:790px;
+  margin:0 auto;
+  margin-top:5px;
+  padding:50px 50px 50px 50px;
+  background-color:white;
+}
+
 .sub-menu-options{
   float:left;
   display:inline-block;

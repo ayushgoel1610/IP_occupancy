@@ -20,7 +20,7 @@
 <script>
 function alertBox() {
     alert("I am an alert box!");
-}
+};
 </script>
 <style>
 #CSVbutton{
@@ -240,6 +240,15 @@ function alertBox() {
     </div>
   </div>
 </div>
+<div id="logs-view" class="sub-menu-window-big">
+  <div class="sub-menu-container-big">
+    <iframe style="min-height:80%;min-width:100%;" src="http://nms.iiitd.edu.in:9128/template/admin/logs/">
+    </iframe>
+    <div id="logs-view-cancel" class="sub-menu-button btn btn-default btn-lg">
+    Close
+    </div>
+  </div>
+</div>
 <div id="my-content" >
   <div id="header">
     <div id="title">
@@ -249,11 +258,27 @@ function alertBox() {
   <div id="my-body">
     <div id="toolbar">
       <!--div class="toolbar-element">Show Attendance</div-->
-      <div id="download-button" class="toolbar-element">Download Attendance</div>
-      <div id="modify-button" class="toolbar-element">Modify Attendance</div>
-      <div id="exception-add-button" class="toolbar-element">Add Exception Date</div>
-      <div id="exception-del-button" class="toolbar-element">Remove Exception</div>
-  <div id="exceptions-view-button" class="toolbar-element">View Exceptions</div>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <div data-hover="dropdown" class="toolbar-element dropdown-toggle">Manage Attendance<b class="caret"></b></div>
+          <ul id="attendance-nav-menu" class="dropdown-menu">
+            <li><div id="download-button" class="toolbar-element">Download Attendance</div></li>
+            <li><div id="modify-button" class="toolbar-element">Modify Attendance</div></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <div data-hover="dropdown" class="toolbar-element dropdown-toggle">Manage Exceptions<b class="caret"></b></div>
+          <ul class="dropdown-menu">
+            <li><div id="exception-add-button" class="toolbar-element">Add Exception Date</div></li>
+            <li><div id="exception-del-button" class="toolbar-element">Remove Exception</div></li>
+            <li><div id="exceptions-view-button" class="toolbar-element">View Exceptions</div></li>
+          </ul>
+        </li>
+      </ul>
+      <div id="logs-view-button" class="toolbar-element">View Admin Logs</div>
+
       <!--div id="admin-logs-button" class="toolbar-element">View Admin Logs</div-->
       <!--div class="toolbar-element">Change Timings</div>
       <div class="toolbar-element">Recalculate Attendance</div-->
@@ -271,10 +296,6 @@ function alertBox() {
 {% endif %}
   		</table>
   	</div>
-  </div>
-  <div id="my-console">
-    <iframe style="height:300px;" src="http://nms.iiitd.edu.in:9128/template/admin/logs/">
-    </iframe>
   </div>
 </div>
 
