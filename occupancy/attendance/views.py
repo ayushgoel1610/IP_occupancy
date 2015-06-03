@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
+from django.contrib import auth
 import pycurl
 import json
 import os, csv
 import StringIO
 import urllib
 from datetime import *
+import re
 # Create your views here.
 
 def curl_request_addr(address,url):
@@ -68,6 +70,11 @@ def index(request):
   n_exceptions = []
   ta_info_json = {}
   if request.user and request.user.is_authenticated() :
+    if request.user.email.split("@")[-1] != 'iiitd.ac.in':
+      auth.logout(request)
+      template = loader.get_template('attendance/main.html');
+      context = RequestContext(request,{'request':request,'user':request.user})
+      return HttpResponse(template.render(context));
     month = request.GET.get('m',str(date.today().month))
     api_data_url = "/attendance/get?email="+ str(request.user.email) + date_string(month)
     api_data = curl_request(api_data_url)
