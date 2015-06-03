@@ -85,6 +85,9 @@ def index(request):
       p_exceptions.append(date_iterator)
     for date_iterator in exceptions_j["negative exceptions"]:
       n_exceptions.append(date_iterator)
-  template = loader.get_template('attendance/index.html');
-  context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
+    template = loader.get_template('attendance/index.html');
+    context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
+  else:
+    template = loader.get_template('attendance/main.html');
+    context = RequestContext(request,{'request':request,'user':request.user})
   return HttpResponse(template.render(context))

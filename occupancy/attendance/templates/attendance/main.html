@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Moving Circles!</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'attendance/circle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'attendance/main.css' %}">
+    <script src="{% static 'attendance/circle.js' %}"></script>
+    {% block main %}
+  </head>
+  <body onload="main()">
+  <div id="iiit-header">
+      <a href="http://www.iiitd.ac.in"><img style="max-height:100%;max-width:100%;display:block;margin:0 auto;"src="http://www.iiitd.ac.in/sites/default/files/images/graphicidentity/logo/style3singlecolorlarge.png" /></a>
+  </div>
+  <div id="login-container" onmouseenter="do_centre_circles()" onmouseleave="do_move_circles()">
+    <div id="login-background">
+      <a href = "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+      <div id="view-button">
+      Login
+      </div>
+      </a>
+    </div>
+  </div>
+  <canvas id="main-canvas" width="800" height="500"></canvas>
+  </body>
+  {% endblock %}
+</html>
