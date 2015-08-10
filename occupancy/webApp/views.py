@@ -316,19 +316,19 @@ def get_student_info(data,indice):
     all_students_info.append(student_info)
   return all_students_info
 
-def push_student_info(all_student_info):
+def push_student_info(all_student_info,request):
   for student_info in all_student_info:
-    stmt = "/ta/put?rollno="+student_info['roll no.']+"&email="+student_info['email id']+"&batch="+student_info['batch']+"&name="+student_info['name']
+    stmt = "/ta/put?rollno="+student_info['roll no.']+"&email="+student_info['email id']+"&batch="+student_info['batch']+"&name="+student_info['name']+"&username="+request.user.email.lower()
     print stmt
     api_data = curl_request(stmt)
 
-def push_student_macs(all_student_info):
+def push_student_macs(all_student_info,request):
   for student_info in all_student_info:
     count = 1
     for i in range(len(student_info.keys())):
       device_string = 'device '+str(count)
       if device_string in student_info.keys():
-        stmt = "/ta/put?rollno="+student_info['roll no.']+"&mac="+student_info[device_string]
+        stmt = "/ta/put?rollno="+student_info['roll no.']+"&mac="+student_info[device_string]+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         count = count + 1
       else:
@@ -344,9 +344,9 @@ def admin_insert_ta_csv(request):
           indice = extract_indices(data)
           all_student_info = get_student_info(data,indice)
           #loop over student info row by row, first creating new students
-          push_student_info(all_student_info)
+          push_student_info(all_student_info,request)
           #loop over file row by row, 'put_mac'ing all the macs
-          push_student_macs(all_student_info)
+          push_student_macs(all_student_info,request)
           #done!
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")
