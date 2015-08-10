@@ -36,6 +36,7 @@ def curl_request_addr(address,url):
   ### END - Code to read token - END ###
   url = urllib.quote(url,safe="%/:=&?~#+!$,;'@()*[]")
   api_data_url = address+url+"&token="+auth_token
+  api_data_url = str(api_data_url.encode('ascii','ignore')) # done to fix random hex charcaters in input string
   api_data_url = str(api_data_url.encode('utf-8')) # done to fix on server
   print api_data_url
   c = pycurl.Curl()
@@ -282,14 +283,6 @@ def valid_csv(data):
   column_names = [name.lower() for name in column_names]
   if not valid_column_names(column_names):
     return False
-  # Loop over and find all column names
-  columns = 0
-  for line in csv_lines:
-    line_columns = len(line.split(','))
-    if columns == 0:
-      columns = line_columns
-    elif columns != line_columns:
-      return False
   return True
 
 def extract_indices(data):
@@ -312,12 +305,16 @@ def get_student_info(data,indice):
     student_info = {}
     words = line.split(',')
     for column_names in indice.keys():
-      student_info[column_names] = words[indice[column_names]]
+      tmp = words[indice[column_names]]
+      tmp = unicode(tmp,"utf-8",errors ="ignore")
+      student_info[column_names] = tmp.encode('ascii','ignore')
     all_students_info.append(student_info)
   return all_students_info
 
 def push_student_info(all_student_info,request):
   for student_info in all_student_info:
+    if student_info['roll no.'] == '':
+      continue
     stmt = "/ta/put?rollno="+student_info['roll no.']+"&email="+student_info['email id']+"&batch="+student_info['batch']+"&name="+student_info['name']+"&username="+request.user.email.lower()
     print stmt
     api_data = curl_request(stmt)
