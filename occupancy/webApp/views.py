@@ -390,7 +390,11 @@ def admin_add_mac(request):
     if authenticate_user(request.user.email.lower()):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
+	rollno = str(rollno.encode('ascii','ignore'))
+	rollno = unicode(rollno,"utf-8",errors="ignore")
         mac = request.POST.get('mac')
+	mac = str(mac.encode('ascii','ignore'))
+        mac = unicode(mac,"utf-8",errors="ignore")
         stmt = "/ta/put?rollno="+rollno+"&mac="+mac+"&username="+request.user.email.lower()
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
