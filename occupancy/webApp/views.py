@@ -512,6 +512,40 @@ def admin_logs_view(request):
       return HttpResponse(template.render(context))
   return HttpResponse('Hello World')
 
+def default_date(month):
+  int_month = num(month)
+  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
+  return str(today)
+
+def num(month):
+  int_month = date.today().month
+  try:
+    tmp = int(month)
+    if tmp >= 1 and tmp <= 12:
+      int_month = tmp
+  except:
+    a = 1
+  return int_month
+
+def error_page(message):
+  return HttpResponse(message)
+
+def admin_calendar_view(request):
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      month = request.GET.get('m',str(date.today().month))
+      api_url = "/exceptions/get?" + date_string(month)
+      api_data = curl_request(api_url)
+      exceptions_j = json.loads(api_data)
+      for date_iterator in exceptions_j["positive exceptions"]:
+        p_exceptions.append(date_iterator)
+      for date_iterator in exceptions_j["negative exceptions"]:
+        n_exceptions.append(date_iterator)
+      template = loader.get_template('webapp/calendar.html');
+      context = RequestContext(request,{'request':request, 'user': request.user,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
+      return HttpResponse(template.render(context))
+  return error_page('Hello World')
+
 #Nothing
 def admin_insert(request, ta, mac):
 	test = Admin.objects.filter(TA = ta)
