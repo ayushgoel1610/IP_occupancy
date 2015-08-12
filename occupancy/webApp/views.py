@@ -540,6 +540,8 @@ def date_string(month):
 def admin_calendar_view(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):
+      p_exceptions =[]
+      n_exceptions = []
       month = request.GET.get('m',str(date.today().month))
       api_url = "/exceptions/get?" + date_string(month)
       api_data = curl_request(api_url)
