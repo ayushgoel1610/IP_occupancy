@@ -24,10 +24,10 @@ urlpatterns = patterns('',
     url(r'^admin/logs/',views.admin_logs_view, name = "admin_logs_view"),
     url(r'^admin/download/',views.admin_download_attendance, name = "admin_download_attendance"),
     url(r'^admin/students/',views.admin_students, name = "admin_students"),
+    url(r'^admin/calendar/$',views.admin_calendar, name = "admin_calendar"),
     url(r'^admin/',views.admin_attendance, name = "admin"),
     url(r'^admin_insert/(?P<ta>.+)/(?P<mac>.+)$',views.admin_insert, name = "admin"),
     url(r'^admin_delete/(?P<ta>.+)$',views.admin_delete, name = "admin"),
-    url(r'^admin/calendar/$',views.admin_calendar, name = "admin_calendar"),
     
 )
 
