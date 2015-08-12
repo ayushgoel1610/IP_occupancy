@@ -541,7 +541,7 @@ def admin_calendar_view(request):
         p_exceptions.append(date_iterator)
       for date_iterator in exceptions_j["negative exceptions"]:
         n_exceptions.append(date_iterator)
-      template = loader.get_template('webapp/calendar.html');
+      template = loader.get_template('webApp/calendar.html');
       context = RequestContext(request,{'request':request, 'user': request.user,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
       return HttpResponse(template.render(context))
   return error_page('Hello World')
