@@ -184,29 +184,12 @@
 </style>
 </head>
 <body>
-  <div id="iiit-header">
+  <!--div id="iiit-header">
       <a href="http://www.iiitd.ac.in"><img style="max-height:100%;max-width:100%;display:block;margin:0 auto;"src="http://www.iiitd.ac.in/sites/default/files/images/graphicidentity/logo/style3singlecolorlarge.png" /></a>
-  </div>
-  <div id='header'>
+  </div-->
+  <!--div id='header'>
   Attendance
-  </div>
-  <div id='all-container'>
-    <div id='nav-bar'>
-      <!-- Show list of user devices -->
-      <div class='nav-element'>Roll No:{{ info.rollno|upper }}</div>
-      <div class='nav-element'>Macs:{% for mac in info.macs %}
-      {{ mac }}
-      {% endfor %}
-      </div>
-      <div class='nav-element highlight'>
-      {% if user and not user.is_anonymous %}
-      <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
-      {% else %}
-      <a href = "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login
-      </a>
-      {% endif %}
-      </div>
- </div>
+  </div-->
     <div id="button-container">
       <div id="prev" class="my-button">Previous Month</div>
       <div id="next" class="my-button">Next Month</div>
