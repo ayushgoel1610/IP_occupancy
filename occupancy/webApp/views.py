@@ -530,6 +530,13 @@ def num(month):
 def error_page(message):
   return HttpResponse(message)
 
+def date_string(month):
+  int_month = num(month)
+  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
+  first_day = str(today.year)+"-"+str(today.month)+"-01"
+  last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
+  return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
+
 def admin_calendar_view(request):
   if request.user and request.user.is_authenticated():
     if authenticate_user(request.user.email.lower()):
