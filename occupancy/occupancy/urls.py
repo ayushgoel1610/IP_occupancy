@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^template/',include('webApp.urls')),
+    url(r'^template/',include('webApp.urls',namespace="attendance-admin")),
     url(r'^attendance/$',include('attendance.urls')),
     # url(r'^oauth/', include ('oauth_provider.urls')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
