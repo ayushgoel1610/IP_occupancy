@@ -21,10 +21,10 @@
       $('#popup').slideToggle("fast");
     });
      $('#prev').click(function(){
-       window.location = "http://nms.iiitd.edu.in:9128/attendance/?m="+(parseInt("{{ month }}")-1);
+       window.location = "http://nms.iiitd.edu.in:9128/template/admin/calendar?m="+(parseInt("{{ month }}")-1);
      });
      $('#next').click(function(){
-       window.location = "http://nms.iiitd.edu.in:9128/attendance/?m="+(parseInt("{{ month }}")+1);
+       window.location = "http://nms.iiitd.edu.in:9128/template/admin/calendar?m="+(parseInt("{{ month }}")+1);
      });
 
     $('#popup').click(function(){
