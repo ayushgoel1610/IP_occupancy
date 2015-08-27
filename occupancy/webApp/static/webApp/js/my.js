@@ -17,10 +17,8 @@ $(document).ready(function(){
     // while (minDate == ""){
     //   // console.log("entered");
     // }
-
     $('#overlay').fadeOut(6000);
   }
-
 });
 
 // window.onload = displaychart;

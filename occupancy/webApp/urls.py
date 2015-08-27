@@ -24,6 +24,9 @@ urlpatterns = patterns('',
     url(r'^admin/',views.admin_attendance, name = "admin"),
     url(r'^admin_insert/(?P<ta>.+)/(?P<mac>.+)$',views.admin_insert, name = "admin"),
     url(r'^admin_delete/(?P<ta>.+)$',views.admin_delete, name = "admin"),
-    
+    url(r'^building/',views.building_layout,name="building"),
+    url(r'^chart3/',views.chart3,name="chart3"),
+    url(r'^class_attendance/',views.get_line_chart, name="class_attendance"),
+    url(r'^check_post/$',views.check_post,name="check_post"),
 )
 

@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF8"> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../static/webApp/js/crossfilter.js"></script>
+<script type="text/javascript" src="../../static/webApp/js/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="../../static/webApp/js/d3.js"></script> -->
+<!-- <script type="text/javascript" src="../../static/webApp/js/dc.js"></script> -->
+<!-- <script type="text/javascript" src="../../static/webApp/js/my.js"></script> -->
+<link rel="stylesheet" type="text/css" href="../../static/webApp/css/bootstrap.min.css" media="screen" /> 
+<!-- <link rel="stylesheet" type="text/css" href="../../static/webApp/css/dc.css" media="screen" />  -->
+<link rel="stylesheet" type="test/css" href="../../static/webApp/css/main.css" media="screen"/>
+<link rel="stylesheet" type="test/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  var items = {{data|safe}};
+  console.log(items);
+
+  var nameItems = {{names|safe}};
+  console.log(nameItems);  
+
+  // console.log(typeof items[0].week);
+  // console.log(items[0].Week1);
+  // var keys=Object.keys(items[0]);
+  // console.log(typeof keys[0]);
+  // console.log(items.length);
+  // console.log(Object.keys(items[0]).length);
+
+  google.load('visualization', '1.1', {packages: ['line']});
+  google.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    // var data = new google.visualization.DataTable(items);
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Week Number');
+    for(i=0; i<nameItems.length; ++i)
+    {
+      data.addColumn('number', nameItems[i]);  
+    }
+    // data.addColumn('number', 'PCSMA');
+    // data.addColumn('number', 'Computer Networks');
+    //TODO: for loop
+    // data.addColumn('number', 'DSA');
+    // data.addRow(items);
+
+    for(i=1; i <= Object.keys(items[0]).length; ++i)
+    {
+      // var obj1 = items[0];
+      // var obj2 = items[1];
+      var obj0 = "Week "+(i+1);
+      var arr = [obj0];
+      for(j=0;j<items.length; ++j)
+      {
+        var obj1 = items[j];
+        arr.push(obj1["Week"+i]);
+      }
+      // var arr = [obj0,obj1["Week"+i],obj2["Week"+i]];
+      data.addRow(arr);
+    }
+
+    var options = {
+      chart: {
+        title: 'Average Class Attendance',
+        subtitle: 'in terms of number of devices'
+      },
+      width: 900,
+      height: 500
+    };
+
+    var chart = new google.charts.Line(document.getElementById('chart-container'));
+
+    chart.draw(data, options);
+  }
+</script>
+</head>
+<body>
+  <input type = "hidden" id = "hidden" value = "new">
+  <nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button> -->
+      <a class="navbar-brand" href="/template/home"> <span class="glyphicon glyphicon-home"></span> NMS-occupancy</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class ="active"><a href="/template/chart1/"><span class="glyphicon glyphicon-stats"></span> Chart1</a></li>
+        <li><a href="/template/chart2/"><span class="glyphicon glyphicon-stats"></span> Chart2</a></li>
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- {{api_data}} -->
+<div id="all-container">
+<!--   <div id="overlay" style = "margin-left:500px">
+    <h4>Data loading will take some time...</h4>
+  </div> -->
+  <div id="chart-container" style="margin-left:50px">
+    <!-- <div id="header-div">Header</div> -->
+    <!-- <canvas id="outer-canvas" width="1278" height="750"> -->
+
+    <!-- </canvas> -->
+  </div>
+</div>
+<!-- <div id ="showdate"></div> -->
+</body>
+</html>
