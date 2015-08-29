@@ -63,6 +63,28 @@ def date_string(month):
   last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
   return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
 
+def present_today(ta_info_json):
+  timings=[]
+  buildings=[]
+  if ta_info_json["batch"] == "phd":
+    timings.append("07:00:00")
+    timings.append("22:00:00")
+    buildings.append("academic")
+  else:
+    timings.append("08:00:00")
+    timings.append("17:00:00")
+    buildings.append("academic")
+    buildings.append("library")
+    buildings.append("student+centre,2")
+  for mac in ta_info_json["macs"]:
+    for building in buildings:
+      api_url = ("/presence?mac="+mac+"&from="+str(date.today())+"-"+timings[0] + "&to="+str(date.today())+ "-" + timings[1] +"&format=yyyy-mm-dd-hh24:mi:ss&building="+building)
+      api_data_str = curl_request_addr("https://192.168.1.40:9136",api_url)
+      api_data = json.loads(api_data_str)
+      if len(api_data["presence"]) > 0:
+       return True 
+  return False
+
 def index(request):
   month = 1
   dates = []
@@ -92,6 +114,9 @@ def index(request):
       p_exceptions.append(date_iterator)
     for date_iterator in exceptions_j["negative exceptions"]:
       n_exceptions.append(date_iterator)
+    day_of_week = date.today().weekday()
+    if present_today(ta_info_json) and (day_of_week < 5 or date.today() in n_exceptions):
+      dates.append(str(date.today())) 
     template = loader.get_template('attendance/index.html');
     context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
   else:
