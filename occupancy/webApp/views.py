@@ -291,7 +291,7 @@ def extract_indices(data):
  indice = {}
  i=0; # iterator
  for column_name in line.split(','):
-   indice[column_name.lower()] = i
+   indice[column_name.lower().strip()] = i
    i = i + 1
  return indice
 
@@ -307,7 +307,7 @@ def get_student_info(data,indice):
     for column_names in indice.keys():
       tmp = words[indice[column_names]]
       tmp = unicode(tmp,"utf-8",errors ="ignore")
-      student_info[column_names] = tmp.encode('ascii','ignore')
+      student_info[column_names] = tmp.encode('ascii','ignore').strip()
     all_students_info.append(student_info)
   return all_students_info
 
