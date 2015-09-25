@@ -280,7 +280,7 @@ def valid_csv(data):
   # All lines should contain same number of columns :)
   csv_lines = data.splitlines()
   column_names = csv_lines[0].split(',')
-  column_names = [name.lower() for name in column_names]
+  column_names = [name.lower().strip() for name in column_names]
   if not valid_column_names(column_names):
     return False
   return True
