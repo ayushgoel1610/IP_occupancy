@@ -79,6 +79,12 @@ function setupSubMenu(){
   $('#logs-view-cancel').click(function(){
     $('#logs-view').toggle();
   });
+  $('#update-view-button').click(function(){
+    $('#update-view').toggle();
+  });
+  $('#update-view-cancel').click(function(){
+    $('#update-view').toggle();
+  });
 /*  $('#admin-logs-button').click(function(){
     window.open("http://nms.iiitd.edu.in:9128/template/admin/logs/","Logs","width=600px,height=400px");
   });*/
