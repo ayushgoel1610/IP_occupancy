@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from webApp.models import *
+from webApp.tasks import update_attendance
 from time import strftime
 from datetime import *
 from dateutil.relativedelta import relativedelta
@@ -14,7 +15,18 @@ import StringIO
 import os, csv
 import urllib
 
+###########################
+######## Globals###########
+###########################
+
+update_attendance_async = ''
+update_attendance_initiated = False
 # Create your views here.
+
+###########################
+##########Views############
+###########################
+
 
 def chart1(request):
  return render(request, 'webApp/home.html')
@@ -480,6 +492,50 @@ def admin_download_attendance(request):
         api_data = curl_request(stmt)
         response = generate_attendance_csv(first_date,last_date,api_data)
         return response
+  return HttpResponse("HelloWorld")
+
+def admin_update_attendance(request):
+  global update_attendance_async
+  global update_attendance_initiated
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='POST':
+        if not update_attendance_initiated:
+          update_attendance_initiated = True
+          from_date = request.POST.get('start')
+          to_date = request.POST.get('end')
+          stmt = "/attendance/update?from="+from_date+"&to="+to_date+"&format=yyyy-mm-dd"
+          stmt += "&username=test"
+          update_attendance_async = update_attendance.delay(stmt)
+          print update_attendance_async
+          return HttpResponseRedirect("/template/admin/update")
+        else:
+          return HttpResponseRedirect("/template/admin/update")
+  return HttpResponse("HelloWorld")
+
+def admin_update(request):
+  global update_attendance_initiated
+  global update_attendance_async
+  if request.user and request.user.is_authenticated():
+    if authenticate_user(request.user.email.lower()):
+      if request.method=='GET':
+        ret =''
+        if not update_attendance_initiated:
+          ret = "Idle"
+        else:
+          print update_attendance_async
+          if update_attendance_async.ready():
+            update_attendance_initiated = False
+            if update_attendance_async.successful():
+              ret = "Attendance Updated Successfully"
+            else:
+              ret = "Attendance Update failed"
+          else:
+            ret = "Updating Attendance"
+        print ret
+        template = loader.get_template('webApp/update_attendance.html');
+        context = RequestContext(request,{'request':request, 'user': request.user, 'initiated':update_attendance_initiated, 'status': ret})
+        return HttpResponse(template.render(context))
   return HttpResponse("HelloWorld")
 
 def logs_table(api_data):

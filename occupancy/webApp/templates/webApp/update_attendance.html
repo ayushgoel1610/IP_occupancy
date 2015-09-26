@@ -1,0 +1,84 @@
+<html>
+<head>
+{% load staticfiles %}
+<link href="{% static 'webApp/css/bootstrap-datepicker.min.css' %}" rel='stylesheet' />
+<link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap-glyphicons.css" rel="stylesheet">
+<script src="{% static 'webApp/lib/jquery.min.js' %}"></script>
+<script src="{% static 'webApp/js/bootstrap-datepicker.min.js' %}"></script>
+<script>
+var time = new Date().getTime();
+
+$(document).ready(function(){
+  options = {
+    format:"yyyy-mm-dd",
+    keyboardNavigation: false,
+    autoclose: true};
+  $('#update-attendance .input-daterange').datepicker(options);
+
+  $(document.body).bind("mousemove keypress", function(e) {
+    time = new Date().getTime();
+  });
+  setTimeout(refresh, 10000);
+});
+function refresh() {
+  if(new Date().getTime() - time >= 10000) 
+    window.location.reload(true);
+  else 
+    setTimeout(refresh, 10000);
+}
+</script>
+<style>
+.sub-button:hover{
+  background-color:#cc3333;
+  color:white;
+}
+</style>
+</head>
+<body style="text-align:center;font-family: 'Lucida Grande',Helvetica,Arial,Verdana,sans-serif;">
+<div style="width:400px; height:330px;margin:0 auto;text-align:left;background-color:red;">
+
+
+{% if initiated %}
+  <div style="width:100%;height:100%;border:solid 1px #bd494e;background-color:white;">
+    <div style="width:100%;background-color:#bd494e;color:white;font-size:25px;text-align:center;">
+      Status
+    </div>
+    <div style="padding:5px;">
+    Updating attendance ...
+    </div>
+{% else %}
+  <div style="width:100%;height:250px;border:solid 1px #3fada8;border-bottom:0px;background-color:white;">
+    <div style="width:100%;height:50px;text-align:center;font-size:30px;background-color:#3fada8;color:white;">
+    Update Attendace
+    </div>
+    <div style="width:100%;height:200px;background-color:white;font-size:20px;">
+    Select Dates:
+    <form id="update-attendance" action="{% url 'attendance-admin:admin_update_attendance' %}"  method="post" style="margin-top:20px;">
+    {% csrf_token %}
+    <div class="input-daterange input-group" id="datepicker">
+      <span class="input-group-addon">From</span>
+      <input type="text" class="input-sm form-control" name="start" />
+      <span class="input-group-addon">to</span>
+      <input type="text" class="input-sm form-control" name="end" />
+    </div>
+    <div style="width:100%;margin-left:125px;margin-top:40px;">
+    <button type="submit" class="sub-button btn btn-default btn-lg" style="width:150px;">
+    Submit
+    </button>
+    </div>
+    </form>
+    </div>
+  </div>
+  <div style="width:100%;height:80px;background-color:white;border:solid 1px #bd494e;">
+    <div style="height:35px;width:100%;background-color:#bd494e;color:white;font-size:25px;text-align:center;">
+      Status
+    </div>
+    <div style="padding:5px;">
+{{ status }}
+    </div>
+  </div>
+{% endif %}
+</div>
+</body>
+</html>
