@@ -244,16 +244,17 @@ function alertBox() {
 </div>
 <div id="logs-view" class="sub-menu-window-big">
   <div class="sub-menu-container-big">
-    <iframe style="height:80%;width:100%;min-height:300px;" src="http://nms.iiitd.edu.in:9128/template/admin/logs/">
+    <iframe style="margin-bottom:20px;border:0;height:80%;width:100%;min-height:400px;" src="http://nms.iiitd.edu.in:9128/template/admin/logs/">
     </iframe>
     <div id="logs-view-cancel" class="sub-menu-button btn btn-default btn-lg">
     Close
     </div>
   </div>
 </div>
-<div id="update-view" class="sub-menu-window-big">
-  <div class="sub-menu-container-big">
-    <iframe style="height:80%;width:100%;min-height:300px;" src="{% url 'attendance-admin:admin_update'%}">
+<div id="update-view" class="sub-menu-window">
+  <div class="sub-menu-container">
+    <iframe style="margin-bottom:20px;height:80%;min-width:400px;width:100%;min-height:450px;border:0;" src="{% url 'attendance-admin:admin_update'%}">
+    </iframe>
     <div id="update-view-cancel" class="sub-menu-button btn btn-default btn-lg">
     Close
     </div>
