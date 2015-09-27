@@ -279,9 +279,15 @@ def admin_students(request):
   context = RequestContext(request,{'request':request, 'user': request.user, 'json':api_data,'access':Access})
   return HttpResponse(template.render(context))
 
+def validate_date(date_text):
+  try:
+    datetime.strptime(date_text, '%Y-%m-%d')
+  except ValueError:
+    raise ValueError("Incorrect data format, should be YYYY-MM-DD")
+
 def valid_column_names(column_names):
   # These are the absolute core required names
-  valid_names = ['roll no.','name','email id','batch']
+  valid_names = ['roll no.','name','email id','batch','date']
   for valid_name in valid_names:
     if valid_name not in column_names:
       return False
@@ -295,6 +301,9 @@ def valid_csv(data):
   column_names = [name.lower().strip() for name in column_names]
   if not valid_column_names(column_names):
     return False
+  indices = extract_indices(data)
+  for line in csv_lines[1:]:
+    validate_date(line.split(',')[indices['date']])
   return True
 
 def extract_indices(data):
@@ -337,7 +346,7 @@ def push_student_macs(all_student_info,request):
     for i in range(len(student_info.keys())):
       device_string = 'device '+str(count)
       if device_string in student_info.keys():
-        stmt = "/ta/put?rollno="+student_info['roll no.']+"&mac="+student_info[device_string]+"&username="+request.user.email.lower()
+        stmt = "/ta/put?rollno="+student_info['roll no.']+"&mac="+student_info[device_string]+"&username="+request.user.email.lower()+"&from="+student_info['date']+"&format=yyyy-mm-dd"
         api_data = curl_request(stmt)
         count = count + 1
       else:
@@ -402,12 +411,14 @@ def admin_add_mac(request):
     if authenticate_user(request.user.email.lower()):
       if request.method=='POST':
         rollno = request.POST.get('rollno')
-	rollno = str(rollno.encode('ascii','ignore'))
-	rollno = unicode(rollno,"utf-8",errors="ignore")
+      	rollno = str(rollno.encode('ascii','ignore'))
+      	rollno = unicode(rollno,"utf-8",errors="ignore")
         mac = request.POST.get('mac')
-	mac = str(mac.encode('ascii','ignore'))
+      	mac = str(mac.encode('ascii','ignore'))
         mac = unicode(mac,"utf-8",errors="ignore")
+        register_date = request.POST.get('date')
         stmt = "/ta/put?rollno="+rollno+"&mac="+mac+"&username="+request.user.email.lower()
+        stmt += "&from="+register_date+"&format=yyyy-mm-dd"
         api_data = curl_request(stmt)
         return HttpResponseRedirect("/template/admin/students/")
   return HttpResponse("HelloWorld")

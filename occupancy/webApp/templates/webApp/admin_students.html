@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% load staticfiles %}
+
+<link href="{% static 'webApp/css/bootstrap-datepicker.min.css' %}" rel='stylesheet' />
 <link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap.min.css" media="screen" > 
 <link rel="stylesheet" type="text/css" href="../../../static/webApp/css/dc.css" media="screen" > 
 <link rel="stylesheet" type="text/css" href="../../../static/webApp/css/bootstrap-glyphicons.css" rel="stylesheet">
@@ -17,6 +21,7 @@
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../../static/webApp/js/jquery.dataTables.min.js"></script>
 
+<script src="{% static 'webApp/js/bootstrap-datepicker.min.js' %}"></script>
 <script type="text/javascript" src="../../../static/webApp/js/bootstrap.js"></script>
 <script type="text/javascript" src="../../../static/webApp/js/select2.js"></script>
 <script type="text/javascript" src="../../../static/webApp/js/admin.js"></script>

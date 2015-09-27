@@ -18,9 +18,17 @@ $(document).ready( function () {
   // } );
   setupToolbar();
   setupSubMenu();
+  setupDatePicker();
 } );
 var calcDataTableHeight = function() {
   return $(window).height()*40/100;
+};
+
+function setupDatePicker(){
+  $('#add-mac #add-mac-form #date').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose: true
+  });
 };
 $(window).resize(function () {
   var oSettings = oTable.fnSettings();
