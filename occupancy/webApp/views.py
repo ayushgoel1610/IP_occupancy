@@ -516,7 +516,7 @@ def admin_update_attendance(request):
           from_date = request.POST.get('start')
           to_date = request.POST.get('end')
           stmt = "/attendance/update?from="+from_date+"&to="+to_date+"&format=yyyy-mm-dd"
-          stmt += "&username=test"
+          stmt += "&username="+request.user.email.lower()
           update_attendance_async = update_attendance.delay(stmt)
           print update_attendance_async
           return HttpResponseRedirect("/template/admin/update")
