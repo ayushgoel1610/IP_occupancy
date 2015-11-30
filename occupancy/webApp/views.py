@@ -13,18 +13,25 @@ import json
 import StringIO
 import os, csv
 import urllib
+from pprint import pprint
 
 # Create your views here.
 
 def chart1(request):
  return render(request, 'webApp/home.html')
-  
 
 def chart2(request):
   return render(request, 'webApp/chart2.html')
 
 def chart3(request):
   return render(request, 'webApp/classAttendance.html')
+
+def chart4(request):
+    module_dir = os.path.dirname(__file__) # get current directory
+    file_dir = os.path.join(module_dir,'token')
+    handle = open(file_dir,'r')
+    auth_token = handle.readline()
+    return render(request, 'webApp/chart4.html', {"token":auth_token} )
 
 def last_day_of_month(any_day):
   next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
@@ -578,35 +585,42 @@ def admin_delete(request, ta):
   del_object.update(deleted = 1)
   return HttpResponseRedirect('/template/admin/')
 
-def building_layout(request):
-  # current_time = datetime.strptime(time,"%Y-%m-%d-%H:%M:%S")
-  now = datetime.now()
-  current_time = now.strftime("%Y-%m-%d-%H:%M:%S")
-  print current_time
-  module_dir = os.path.dirname(__file__) # get current directory
-  file_dir = os.path.join(module_dir,'token')
-  handle = open(file_dir,'r')
-  auth_token = handle.readline()
-  list = []
-  url_time=now.strftime("%Y-%m-%d-%H:%M:%S")
-  api_data = curl_request_addr("https://192.168.1.40:9119","/count?at=" + url_time + "&format=yyyy-mm-dd-hh24:mi:ss&type=bfwr")
-  api_to_json = json.loads(api_data)
-  for j in range(0,int(api_to_json["size"])):
-    dict = {}
-    #count = count + int(api_to_json["occupancy_information"][j]["count"])
-    dict["day"] = now.strftime("%m/%d/%Y")
-    dict["building"] = api_to_json["occupancy_information"][j]["building"]
-    dict["floor"] = api_to_json["occupancy_information"][j]["floor"]
-    dict["wing"] = api_to_json["occupancy_information"][j]["wing"]
-    dict["room"] = api_to_json["occupancy_information"][j]["room"]
-    dict["count"] = api_to_json["occupancy_information"][j]["count"]
-    list.append(dict)
-  keys = ['day','building','floor','wing','room','count']
-  response = HttpResponse(content_type='text/csv')
-  response['Content-Disposition'] = 'attachment; filename="building.csv"'
-  dict_writer = csv.DictWriter(response, keys)
-  dict_writer.writer.writerow(keys)
-  dict_writer.writerows(list)
-  # print list
-  return render(request, 'webApp/building.html', {"list":list})
+# def building_layout(request):
+#   # current_time = datetime.strptime(time,"%Y-%m-%d-%H:%M:%S")
+#   now = datetime.now()
+#   current_time = now.strftime("%Y-%m-%d-%H:%M:%S")
+#   print current_time
+#   module_dir = os.path.dirname(__file__) # get current directory
+#   file_dir = os.path.join(module_dir,'token')
+#   handle = open(file_dir,'r')
+#   auth_token = handle.readline()
+#   list = []
+#   url_time=now.strftime("%Y-%m-%d-%H:%M:%S")
+#   api_data = curl_request_addr("https://192.168.1.40:9136","/count?at=" + url_time + "&format=yyyy-mm-dd-hh24:mi:ss&type=bfwru")
+#   api_to_json = json.loads(api_data)
+#   for j in range(0,int(api_to_json["size"])):
+#     dict = {}
+#     #count = count + int(api_to_json["occupancy_information"][j]["count"])
+#     dict["day"] = now.strftime("%m/%d/%Y")
+#     dict["building"] = api_to_json["occupancy_information"][j]["building"]
+#     dict["floor"] = api_to_json["occupancy_information"][j]["floor"]
+#     dict["wing"] = api_to_json["occupancy_information"][j]["wing"]
+#     dict["room"] = api_to_json["occupancy_information"][j]["room"]
+#     dict["count"] = api_to_json["occupancy_information"][j]["count"]
+#     dict["uids"] = api_to_json["occupancy_information"][j]["uids"]
+#     list.append(dict)
+#   keys = ['day','building','floor','wing','room','count','uids']
+#   response = HttpResponse(content_type='text/csv')
+#   response['Content-Disposition'] = 'attachment; filename="building.csv"'
+#   dict_writer = csv.DictWriter(response, keys)
+#   dict_writer.writer.writerow(keys)
+#   dict_writer.writerows(list)
+#   # pprint (list)
+#   return render(request, 'webApp/building.html', {"list":list})
 
+def building_layout(request):
+    module_dir = os.path.dirname(__file__) # get current directory
+    file_dir = os.path.join(module_dir,'token')
+    handle = open(file_dir,'r')
+    auth_token = handle.readline()
+    return render(request, 'webApp/building2.html', {"token":auth_token} )

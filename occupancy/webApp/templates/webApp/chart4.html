@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="../../static/webApp/js/chart4.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+</head>
+
+<body>
+	{% csrf_token %}
+	<div id="chart4" style="height: 400px"></div>
+
+</body>
+
+<script>
+	showToken("{{token}}")
+</script>
+</html>

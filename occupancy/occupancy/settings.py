@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'webApp',
     'attendance',
     'social.apps.django_app.default',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -49,6 +50,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -75,6 +78,7 @@ ROOT_URLCONF = 'occupancy.urls'
 
 WSGI_APPLICATION = 'occupancy.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

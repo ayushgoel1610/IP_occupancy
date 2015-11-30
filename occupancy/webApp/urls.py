@@ -28,5 +28,6 @@ urlpatterns = patterns('',
     url(r'^chart3/',views.chart3,name="chart3"),
     url(r'^class_attendance/',views.get_line_chart, name="class_attendance"),
     url(r'^check_post/$',views.check_post,name="check_post"),
+    url(r'^chart4/',views.chart4,name="chart4"),
 )
 

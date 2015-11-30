@@ -4,14 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js" type="text/javascript"></script>
   <script type="text/javascript" src="../../static/webApp/js/crossfilter.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   <script type="text/javascript" src="../../static/webApp/js/bootstrap.min.js"></script>
-  <!-- // <script type="text/javascript" src="../../static/webApp/js/d3.js"></script> -->
-  <!-- // <script type="text/javascript" src="../../static/webApp/js/dc.js"></script> -->
-  <!-- // <script type="text/javascript" src="../../static/webApp/js/my.js"></script> -->
   <link rel="stylesheet" type="text/css" href="../../static/webApp/css/bootstrap.min.css" media="screen" /> 
-  <!-- <link rel="stylesheet" type="text/css" href="../../static/webApp/css/dc.css" media="screen" />  -->
   <link rel="stylesheet" type="test/css" href="../../static/webApp/css/main.css" media="screen"/>
   <link rel="stylesheet" type="test/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
@@ -19,14 +15,7 @@
   <input type = "hidden" id = "hidden" value = "on">
   <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-      <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> -->
       <a class="navbar-brand" href="/template/home"> <span class="glyphicon glyphicon-home"></span> NMS-occupancy</a>
     </div>
 
@@ -40,10 +29,8 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<!-- {{api_data}} -->
+
 <div id="canvas-container">
-  <!-- <div id="header-div">Header</div> -->
-  <!-- <canvas id="outer-canvas" width="1278" height="750"> -->
   
   <ul class="list-inline floor 5">
     <li class="wing A"></li><li 
@@ -76,7 +63,7 @@
     class="wing B"></li>
   </ul>
 
-  <div class="building-index">
+  <!-- <div class="building-index">
     <ul class="list-inline">
       <li class="index-element">
         Floor   
@@ -88,30 +75,86 @@
         Color   
       </li>
     </ul>
-
-    <!-- <ul class="list-inline">
-      <li>
-        oassndojasd
-      </li><li>
-        jassdjksadjk
-      </li><li>
-        nalkdnsald
-      </li>
-    </ul> -->
-
-  </div>
-  <!-- </canvas> -->
+  </div> -->
+  
+  <div id="building-chart"></div>
 </div>
-<!-- <div id ="showdate"></div> -->
-<script src="../../static/webApp/js/canvas.js"></script>
+<div id="button-container">
+  <button id="start-button" class="btn btn-primary">Start</button>
+</div>
 
-{% for p in list %}
-{% if p.building == 'Academic' %}
-<!-- <div class="list">{{p}}</div> -->
-  <script>
-    drawDots("{{p.floor}}","{{p.wing}}","{{p.count}}","{{p.uids}}");
-  </script>
-{% endif %}
-{%endfor%}  
 </body>
+
+<!-- modal html -->
+<div class="modal fade" id="elevator-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" style="z-index:2000">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="lineModalLabel">People carrying the device likely used elevators</h4>
+      </div>
+      <div class="modal-body">
+      <ul class="elevator-list">
+      </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- last location modal html -->
+<div class="modal fade" id="last-location-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" style="z-index:1500">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="lineModalLabel">Last recorded locations within the Academic Building</h4>
+      </div>
+      <div class="modal-body">
+      <ul class="last-location-list">
+      </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script src="../../static/webApp/js/canvas.js"></script>
+<script src="../../static/webApp/js/request.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="../../static/webApp/js/requestLastLocation.js"></script>
+
+<script>
+  showToken("{{token}}", processData, false);
+  $(document).ready(function(){
+    
+    console.log("canvas jquery working");
+    
+    $("#start-button").click(function () {
+      $(this).text(function(i, v){
+        if (v==='Start'){
+          startDrill('{{token}}', 15000);
+          $('#start-button').addClass('btn-danger').removeClass('btn-primary');
+          return 'Stop'
+        }
+        else{
+          stopDrill();
+          writeElevatorIds();
+          clearVars();
+          $('#start-button').addClass('btn-primary').removeClass('btn-danger');
+          // $('#elevator-modal').modal('show');
+          return 'Start'
+        }
+      })
+    });
+
+  });
+
+  function get_id(id){
+    console.log(id);
+    getLastLocationData(id, 10, '{{token}}', parseFloors);
+  }
+
+</script>
+
 </html>
