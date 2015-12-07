@@ -18,6 +18,7 @@ $(document).ready( function () {
   setupToolbar();
   setupMainMenu();
   setupSubMenu();
+  setupDatePicker();
 /*  $('#download-button').click(function(){
     $('#download').toggle();
   });*/
@@ -52,6 +53,16 @@ function setupMainMenu(){
     });
   });
 };*/
+
+function setupDatePicker(){
+  $('#download #download-form #month').datepicker({
+    format: "yyyy-mm",
+    startView: "months", 
+    minViewMode: "months",
+    autoclose: true
+  });
+};
+
 
 function setupSubMenu(){
   var subMenuOptions=["download","modify","exception-add","exception-del"];
