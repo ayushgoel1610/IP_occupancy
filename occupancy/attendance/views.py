@@ -47,7 +47,7 @@ def extract_date(year, month):
   if int_month <= 0:
     int_year -= 1
     int_month = 12
-  elif int_month >= '13':
+  elif int_month >= 13:
     int_year += 1
     int_month = 1
   today = datetime.strptime("01 "+str(int_month)+" "+str(int_year),"%d %m %y")
