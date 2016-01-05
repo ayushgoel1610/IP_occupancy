@@ -41,24 +41,20 @@ def last_day_of_month(any_day):
   next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
   return next_month - timedelta(days=next_month.day)
 
-def default_date(month):
-  int_month = num(month)
-  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
-  return str(today)
-
-def num(month):
-  int_month = date.today().month
-  try:
-    tmp = int(month)
-    if tmp >= 1 and tmp <= 12:
-      int_month = tmp
-  except:
-    a = 1
-  return int_month
-
-def date_string(month):
-  int_month = num(month)
-  today = datetime.strptime("01 "+str(int_month)+" 15","%d %m %y")
+def extract_date(year, month):
+  int_month = int(month)
+  int_year = int(year)
+  if int_month <= 0:
+    int_year -= 1
+    int_month = 12
+  elif int_month >= '13':
+    int_year += 1
+    int_month = 1
+  today = datetime.strptime("01 "+str(int_month)+" "+str(int_year),"%d %m %y")
+  return today
+ 
+def date_string(year, month):
+  today = extract_date(year, month)
   first_day = str(today.year)+"-"+str(today.month)+"-01"
   last_day = str(today.year)+"-"+str(today.month)+"-"+str(last_day_of_month(today).day)
   return "&from="+first_day+"&to="+last_day+"&format=yyyy-mm-dd"
@@ -98,7 +94,9 @@ def index(request):
       context = RequestContext(request,{'request':request,'user':request.user})
       return HttpResponse(template.render(context));
     month = request.GET.get('m',str(date.today().month))
-    api_data_url = "/attendance/get?email="+ str(request.user.email) + date_string(month)
+    year = request.GET.get('y',str(date.today().strftime('%y')))
+    input_date = extract_date(year, month)
+    api_data_url = "/attendance/get?email="+ str(request.user.email) + date_string(year, month)
     api_data = curl_request(api_data_url)
     stmt = "/ta/get?email=" + str(request.user.email)
     jdata = json.loads(api_data)
@@ -107,7 +105,7 @@ def index(request):
     for date_iterator in jdata["present_dates"]:
       dates.append(date_iterator)
     print dates
-    api_url = "/exceptions/get?" + date_string(month)
+    api_url = "/exceptions/get?" + date_string(year, month)
     api_data = curl_request(api_url)
     exceptions_j = json.loads(api_data)
     for date_iterator in exceptions_j["positive exceptions"]:
@@ -118,7 +116,7 @@ def index(request):
     if present_today(ta_info_json) and (day_of_week < 5 or date.today() in n_exceptions):
       dates.append(str(date.today())) 
     template = loader.get_template('attendance/index.html');
-    context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':default_date(month),'month':num(month)})
+    context = RequestContext(request,{'request':request, 'user': request.user, 'dates':dates,'info':ta_info_json,'positive_exceptions':p_exceptions,'negative_exceptions':n_exceptions,'default_date':input_date.strftime('%Y-%m-%d'),'month':input_date.month,'year':input_date.strftime('%y')})
   else:
     template = loader.get_template('attendance/main.html');
     context = RequestContext(request,{'request':request,'user':request.user})
